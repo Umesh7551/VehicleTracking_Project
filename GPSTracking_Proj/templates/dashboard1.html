@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} GPS Tracker Data {% endblock %}
+
+
+{% block content %}
+
+<!--<h1>GPS Tracker Data</h1>-->
+<br/>
+
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Registration Number</th>
+            <th>Zone</th>
+            <th>Vendor</th>
+            <th>Auth. Key</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Speed</th>
+            <th>Accuracy</th>
+            <th>Timestamp</th>
+            <th>Panic</th>
+            <th>Ignition</th>
+            <th>Air Condition</th>
+            <th>Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+    {% if tracker_data_list %}
+        {% for data in tracker_data_list %}
+        <tr>
+            <td>{{ data.id }}</td>
+            <td>{{ data.car }}</td>
+            <td>{{ data.zone }}</td>
+            <td>{{ data.vendor }}</td>
+            <td>{{ data.auth_key }}</td>
+            <td>{{ data.latitude }}</td>
+            <td>{{ data.longitude }}</td>
+            <td>{{ data.speed }}</td>
+            <td>{{ data.accuracy }}</td>
+            <td>{{ data.timestamp }}</td>
+            <td>{{ data.panic }}
+            {% if data.panic == True %}
+                    <img src="{% static 'images/panic.png' %}" alt="Panic Image" title="Panic Button is pressed!!"
+                         id="panic_image"
+                         style="width: 30px; height: 25px; float: right; margin-right: 15px;margin-top: 10px;"/>
+
+                    {% endif %}</td>
+            <td>{{ data.ignition }}
+            <!-- Add this block to display green or red dot based on ignition value -->
+                    {% if data.ignition == True %}
+                    <img src="{% static 'images/green-dot.png' %}" alt="Green Dot" title="Ignition is On"
+                         id="ignition_on"
+                         style="width: 20px; height: 20px; float: right; right: 0; top: 0;"/>
+                    {% else %}
+                    <img src="{% static 'images/red-dot.png' %}" alt="Red Dot" title="Ignition is Off" id="ignition_off"
+                         style="width: 20px; height: 20px; float: right; right: 0; top: 0;"/>
+                    {% endif %}</td>
+            <td>{{ data.air_condition }}</td>
+
+            <td><!-- Add this block inside the outer_block div -->
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                        onclick="locateOnMap('{{ data.latitude }}', '{{ data.longitude }}')" data-default-car-image="{% static 'images/default-car-image.png' %}">Locate on Map
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Live Location</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="map" style="height: 300px;"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div></td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+    </tbody>
+
+  </table>
+</div>
+
+
+{% endblock %}
+
+

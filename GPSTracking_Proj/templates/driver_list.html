@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %} Driver List  {% endblock %}
+
+
+{% block content %}
+<h1> Driver List</h1>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Driver Name</th>
+            <th>Driver Licence Number</th>
+            <th>Issue Date</th>
+            <th>Valid Till</th>
+            <th>Address</th>
+            <th>Upload Licence</th>
+            <th>Car</th>
+            <th>RFID Number</th>
+            <th>Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+    {% if drivers_list %}
+        {% for driver in drivers_list %}
+        <tr>
+            <td>{{ driver.id }}</td>
+            <td>{{ driver.driver_name }}</td>
+            <td>{{ driver.driver_licence_number }}</td>
+            <td>{{ driver.issue_date }}</td>
+            <td>{{ driver.valid_till }}</td>
+            <td><img src="{{ driver.upload_licence.url }}" alt="{{ driver.driver_name }} Image" style="max-width: 100px; max-height: 100px;"></td>
+            <td>{{ driver.car }}</td>
+            <td>{{ driver.rfid }}</td>
+            <td><a href="{% url 'update_driver' driver.id %}"><i class="fa-sharp fa-solid fa-pen" title="Update Driver"></i></a> | <a href="{% url 'delete_driver' driver.id %}" class="delete-link" data-driver-id="{{ driver.id }}"><i class="fa-solid fa-trash" title="Delete Driver"></i></a></td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+    </tbody>            <td>{{ driver.address }}</td>
+
+
+  </table>
+</div>
+
+{% endblock %}

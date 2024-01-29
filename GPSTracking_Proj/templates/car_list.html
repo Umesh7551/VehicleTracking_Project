@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %} Car List  {% endblock %}
+
+
+{% block content %}
+<h1> Car List</h1>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Registration Number</th>
+            <th>Registration Date</th>
+            <th>Vehicle Name</th>
+            <th>Colour</th>
+            <th>Model</th>
+            <th>Chassis Number</th>
+            <th>Tracker ID</th>
+            <th>Insurance</th>
+            <th>PUC</th>
+            <th>Seating Capacity</th>
+            <th>Fuel Type</th>
+            <th>Air Condition</th>
+            <th>Owner Name</th>
+            <th>Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+    {% if car_list %}
+        {% for car in car_list %}
+        <tr>
+            <td>{{ car.id }}</td>
+            <td>{{ car.registration_number }}</td>
+            <td>{{ car.registration_date }}</td>
+            <td>{{ car.vehicle_name }}</td>
+            <td>{{ car.colour }}</td>
+            <td>{{ car.model }}</td>
+            <td>{{ car.chassis_number }}</td>
+            <td>{{ car.tracker_id }}</td>
+            <td>{{ car.insurance }}</td>
+            <td>{{ car.puc }}</td>
+            <td>{{ car.seating_capacity }}</td>
+            <td>{{ car.fuel_type }}</td>
+            <td>{{ car.air_condition }}</td>
+            <td>{{ car.owner }}</td>
+            <td><a href="{% url 'update_car' car.id %}">Update Car</a></td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+    </tbody>
+
+  </table>
+</div>
+
+{% endblock %}

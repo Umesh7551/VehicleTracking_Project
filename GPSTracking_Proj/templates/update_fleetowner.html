@@ -1,0 +1,17 @@
+
+{% extends 'base.html' %}
+
+{% block title %} Update Fleet Owner {% endblock %}
+
+
+{% block content %}
+
+<h2>Update Fleetowner</h2>
+<form method="post" action="{% url 'update_fleetowner' fleetowner.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">Update Fleet Owner</button>
+</form>
+
+
+{% endblock %}

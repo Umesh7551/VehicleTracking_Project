@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} Fleet Owner List {% endblock %}
+
+
+{% block content %}
+
+<h1>Fleet Owner List</h1>
+
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact Number</th>
+                    <th>Address</th>
+                    <th>Aadhar Number</th>
+                    <th>PAN Number</th>
+                    <th>Resident Proof</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if fleetowners %}
+                {% for fleetowner in fleetowners %}
+                <tr>
+                    <td>{{ fleetowner.id }}</td>
+                    <td>{{ fleetowner.name }}</td>
+                    <td>{{ fleetowner.email }}</td>
+                    <td>{{ fleetowner.contact_number }}</td>
+                    <td>{{ fleetowner.address }}</td>
+                    <td>{{ fleetowner.aadhar_number }}</td>
+                    <td>{{ fleetowner.pan_number }}</td>
+                    <td>{{ fleetowner.resident_proof }}</td>
+                    <td><a href="{% url 'update_fleetowner' fleetowner.id %}">Update Fleet Owner</a></td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+
+  </table>
+</div>
+
+
+
+{% endblock %}

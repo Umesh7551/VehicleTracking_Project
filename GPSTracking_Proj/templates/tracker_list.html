@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %} Tracker List  {% endblock %}
+
+
+{% block content %}
+<h1> GPS Tracker List</h1>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Serial Number</th>
+            <th>Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+    {% if tracker_list %}
+        {% for tracker in tracker_list %}
+        <tr>
+            <td>{{ tracker.id }}</td>
+            <td>{{ tracker.serial_number }}</td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+    </tbody>
+
+  </table>
+</div>
+
+{% endblock %}

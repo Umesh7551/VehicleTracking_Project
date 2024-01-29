@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} GPS Tracker Data {% endblock %}
+
+
+{% block content %}
+
+<!--<h1>GPS Tracker Data</h1>-->
+<br/>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" id="dashboard-content">
+
+            {% for data in tracker_data_list %}
+            <div class="col-md-3 outer_block">
+                <div class="badge">
+                    <span>ID: {{ data.id }}</span><br/>
+                    <span>Car Reg. Number: {{ data.car }}</span><br/>
+                    <span>Zone: {{ data.zone }}</span><br/>
+                    <span> Vendor: {{ data.vendor }}</span><br/>
+                    <span>Auth. Key: {{ data.auth_key }}</span><br/>
+                    <span>Latitude: {{ data.latitude }}</span><br/>
+                    <span>Longitude: {{ data.longitude }}</span><br/>
+                    <span>Speed: {{ data.speed }}</span><br/>
+                    <span>Accuracy: {{ data.accuracy }}</span><br/>
+                    <span>Time: {{ data.timestamp }}</span><br/>
+                    <span>Panic: {{ data.panic }}</span><br/>
+                    {% if data.panic == True %}
+                    <img src="{% static 'images/panic.png' %}" alt="Panic Image" title="Panic Button is pressed!!"
+                         id="panic_image"
+                         style="width: 20px; height: 20px; float: right;position: absolute; right: 0; top: 25px;">
+
+                    {% endif %}
+
+                    <span>Ignition: {{ data.ignition }}</span><br/>
+
+                    <!-- Add other fields as needed -->
+                    <!-- Add this block to display green or red dot based on ignition value -->
+                    {% if data.ignition == True %}
+                    <img src="{% static 'images/green-dot.png' %}" alt="Green Dot" title="Ignition is On"
+                         id="ignition_on"
+                         style="width: 20px; height: 20px; float: right;position: absolute; right: 0; top: 0;">
+                    {% else %}
+                    <img src="{% static 'images/red-dot.png' %}" alt="Red Dot" title="Ignition is Off" id="ignition_off"
+                         style="width: 20px; height: 20px; float: right;position: absolute; right: 0; top: 0;">
+                    {% endif %}
+
+                    <span>Air Condition: {{ data.air_condition }}</span><br/>
+
+                </div>
+                <!-- Add this block inside the outer_block div -->
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                        onclick="locateOnMap('{{ data.latitude }}', '{{ data.longitude }}')" data-default-car-image="{% static 'images/default-car-image.png' %}">Locate on Map
+                </button>
+                <!-- Add this div at the end of your template -->
+                <!--            <div id="map" style="height: 300px; width: 300px"></div>-->
+
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Live Location</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="map" style="height: 300px;"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+

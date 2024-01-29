@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+
+{% block title %} Update RFID  {% endblock %}
+
+{% block content %}
+<h2>Update RFID</h2>
+<form method="post" action="{% url 'update_rfid' rfid.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">Update RFID</button>
+</form>
+
+
+{% endblock %}

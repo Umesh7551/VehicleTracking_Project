@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %} RFID List  {% endblock %}
+
+
+{% block content %}
+<h1> RFID List</h1>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>RFID Number</th>
+            <th>Driver Name</th>
+            <th>Is Active</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% if rfid_list %}
+        {% for rfid in rfid_list %}
+        <tr>
+            <td>{{ rfid.id }}</td>
+            <td>{{ rfid.rfid_code }}</td>
+            <td>{{ rfid.driver }}</td>
+            <td>{{ rfid.is_active }}</td>
+            <td><a href="{% url 'update_rfid' rfid.id %}"><i class="fa-sharp fa-solid fa-pen" title="Update RFID"></i></a> | <a href="{% url 'delete_rfid' rfid.id %}"><i class="fa-solid fa-trash" title="Delete RFID"></i></a></td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+    </tbody>
+
+  </table>
+</div>
+
+{% endblock %}
