@@ -31,6 +31,7 @@
             <td>{{ driver.driver_licence_number }}</td>
             <td>{{ driver.issue_date }}</td>
             <td>{{ driver.valid_till }}</td>
+            <td>{{ driver.address }}</td>
             <td><img src="{{ driver.upload_licence.url }}" alt="{{ driver.driver_name }} Image" style="max-width: 100px; max-height: 100px;"></td>
             <td>{{ driver.car }}</td>
             <td>{{ driver.rfid }}</td>
@@ -38,7 +39,7 @@
         </tr>
         {% endfor %}
     {% endif %}
-    </tbody>            <td>{{ driver.address }}</td>
+    </tbody>
 
 
   </table>

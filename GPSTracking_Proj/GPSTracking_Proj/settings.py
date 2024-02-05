@@ -31,6 +31,14 @@ DEBUG = True
 # ALLOWED_HOSTS = ['192.168.0.193', '103.120.250.37',]
 ALLOWED_HOSTS = []
 
+# Celery Configuration
+CELERY_BROKER_URL = 'pyamqp://guest:guest@localhost:5672//'
+CELERY_RESULT_BACKEND = 'rpc://'
+# CELERY_RESULT_BACKEND = 'django-db'
+# BROKER_URL = 'amqp://guest:guest@127.0.0.1:5672//'
+# CELERY_BROKER_URL = 'amqp://rabbitmq'
+CELERY_ENABLED = True
+# CELERY_DEFAULT_EXCHANGE_TYPE: 'direct'
 
 # Application definition
 
@@ -42,10 +50,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'GPSTracking_App',
-
-
-
+    'celery',
+    'accounts',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -139,3 +147,9 @@ STATICFILES_DIRS = [STATICFILES_DIR,]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # AUTH_USER_MODEL = 'GPSTracking_App.FleetOwner'
+# AUTH_USER_MODEL = 'accounts.FleetOwner'
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# LOGIN_REDIRECT_URL = '/accounts/profile/'

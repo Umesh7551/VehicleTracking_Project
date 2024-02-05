@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import FleetOwner, Car, GPSTracker, Tracker_data, Driver, RFID
+from .models import FleetOwner, Car, GPSTracker, Tracker_data, Driver, RFID, Zone
 
 
 # Register your models here.
@@ -32,3 +32,9 @@ class DriverAdmin(admin.ModelAdmin):
 @admin.register(RFID)
 class RFIDAdmin(admin.ModelAdmin):
     list_display = ['id', 'rfid_code', 'driver']
+
+
+@admin.register(Zone)
+class ZoneAdmin(admin.ModelAdmin):
+    list_display = ['id', 'zone_name']
+

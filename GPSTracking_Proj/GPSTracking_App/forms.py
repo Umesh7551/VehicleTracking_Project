@@ -39,3 +39,4 @@ class RFIDForm(forms.ModelForm):
     class Meta:
         model = RFID
         fields = ['rfid_code', 'is_active']
+

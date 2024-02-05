@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!-- delete_driver.html -->
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %} Delete RFID {% endblock %}
+
+{% block content %}
+  <h1>Delete RFID</h1>
+  <p>Are you sure you want to delete the RFID '{{ rfid.rfid_code }}'?</p>
+  <form method="post" action="{% url 'delete_rfid' id=rfid.id %}">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Delete</button>
+    <a href="{% url 'rfid_list' %}">Cancel</a>
+  </form>
+{% endblock %}
