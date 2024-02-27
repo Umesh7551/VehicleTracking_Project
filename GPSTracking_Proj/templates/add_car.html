@@ -1,10 +1,16 @@
 {% extends 'base.html' %}
-
+{% load django_bootstrap5 %}
 {% block title %} Add Car  {% endblock %}
 
 
 {% block content %}
 <h1> Add Car Form</h1>
+<div id="success-message" class="alert alert-success" style="display: none;">
+    Car added successfully. Redirecting to Fleet Owner List...
+</div>
+<div id="error-message" class="alert alert-error" style="display: none;">
+    Car is not added successfully.
+</div>
 <form action="{% url 'add_car' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}

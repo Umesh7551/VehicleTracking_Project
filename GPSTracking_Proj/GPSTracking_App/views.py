@@ -1,3 +1,5 @@
+import time
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponse, JsonResponse
@@ -15,6 +17,10 @@ from django.utils import timezone
 # Create your views here.
 # from login_required import login_not_required
 
+# - Index page This will be first page of application
+# @login_not_required
+def index(request):
+    return render(request, 'index.html')
 
 # - Login
 # @login_not_required
@@ -46,7 +52,10 @@ def add_fleet_owner(request):
         form = FleetOwnerForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Fleet owner added successfully.')  # Add success message
             return redirect('fleet_owner_list')  # Redirect to a view that displays the list of fleet owners
+        else:
+            messages.error(request, 'Failed to add fleet owner. Please check the form.')  # Add error message
     else:
         form = FleetOwnerForm()
 
@@ -65,7 +74,10 @@ def update_fleetowner(request, id):
         form = FleetOwnerForm(request.POST, instance=fleetowner)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Fleet owner Updated successfully.')  # Add success message
             return redirect('fleet_owner_list')  # Adjust the URL name based on your setup
+        else:
+            messages.error(request, 'Failed to Update fleet owner. Please check the form.')  # Add error message
     else:
         form = FleetOwnerForm(instance=fleetowner)
     return render(request, 'update_fleetowner.html', {'form': form, 'fleetowner': fleetowner})
@@ -323,7 +335,10 @@ def add_car(request):
                 car.tracker = tracker
 
             car.save()
+            messages.success(request, 'Car added successfully.')  # Add success message
             return redirect('car_list')  # Adjust the URL name based on your setup
+        else:
+            messages.error(request, 'Failed to add car. Please check the form.')  # Add error message
     else:
         form = CarForm()
 
@@ -343,7 +358,10 @@ def update_car(request, id):
         form = CarForm(request.POST, instance=car)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Car Updated successfully.')  # Add success message
             return redirect('car_list')  # Adjust the URL name based on your setup
+        else:
+            messages.error(request, 'Failed to Update Car. Please check the form.')  # Add error message
     else:
         form = CarForm(instance=car)
     return render(request, 'update_car.html', {'form': form, 'car': car})
@@ -353,7 +371,10 @@ def add_driver(request):
         form = DriverForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Driver added successfully.')  # Add success message
             return redirect('driver_list')
+        else:
+            messages.error(request, 'Failed to add Driver. Please check the form.')  # Add error message
     else:
         form = DriverForm()
     return render(request, 'add_driver.html', {'form': form})
@@ -369,7 +390,10 @@ def update_driver(request, id):
         form = DriverForm(request.POST, request.FILES, instance=driver)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Driver Updated successfully.')  # Add success message
             return redirect('driver_list')  # Adjust the URL name based on your setup
+        else:
+            messages.error(request, 'Failed to Update Driver. Please check the form.')  # Add error message
     else:
         form = DriverForm(instance=driver)
     return render(request, 'update_driver.html', {'form': form, 'driver': driver})
@@ -379,22 +403,45 @@ def delete_driver(request, id):
     driver = get_object_or_404(Driver, id=id)
     if request.method == 'POST':
         driver.delete()
+        messages.success(request, 'Driver Deleted successfully.')  # Add success message
         return redirect('driver_list')  # Replace with your actual driver list URL name
+    else:
+        messages.error(request, 'Failed to Delete Driver. Please check the form.')  # Add error message
 
     return render(request, 'delete_driver.html', {'driver': driver})
 
 
 
 # - Add Tracker
+# def add_tracker(request):
+#     if request.method == 'POST':
+#         form = TrackerForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             # return JsonResponse({'success': True})
+#             # messages.success(request, 'Tracker added successfully.')  # Add success message
+#             return redirect('tracker_list')
+#         else:
+#             pass
+#             # return JsonResponse({'success': False, 'errors': form.errors})
+#             # messages.error(request, 'Failed to add Tracker. Please check the form.')  # Add error message
+#     else:
+#         form = TrackerForm()
+#     return render(request, 'add_tracker.html', {'form': form})
+
 def add_tracker(request):
     if request.method == 'POST':
         form = TrackerForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('tracker_list')
+            return JsonResponse({'success': True})
+        else:
+            errors = form.errors.as_json()
+            return JsonResponse({'success': False, 'errors': errors})
     else:
         form = TrackerForm()
     return render(request, 'add_tracker.html', {'form': form})
+
 
 
 

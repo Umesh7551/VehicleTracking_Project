@@ -1,36 +1,56 @@
 {% extends 'base.html' %}
-
-{% block title %} Add Tracker  {% endblock %}
-
+{% load django_bootstrap5 %}
+{% block title %} Add Tracker {% endblock %}
 
 {% block content %}
 <h1> Add Tracker Form</h1>
-<form action="{% url 'add_tracker' %}" method="post">
+
+<div id="success-message" class="alert alert-success" style="display: none;">
+    Tracker added successfully. Redirecting to Tracker List...
+</div>
+<div id="error-message" class="alert alert-error" style="display: none;">
+    Tracker is not added successfully.
+</div>
+
+<form id="tracker-form" action="{% url 'add_tracker' %}" method="post" novalidate>
     {% csrf_token %}
-    {{ form.as_p }}
-    <input class="btn btn-success" type="submit" value="Add Tracker">
+
+    {% bootstrap_form form %}
+
+    {% bootstrap_button button_type="submit" content="Add Tracker" %}
+    {% bootstrap_button button_type="reset" content="Cancel" %}
+
 </form>
 
-{% if form.errors %}
-    <div class="alert alert-danger">
-        {% for field, error_list in form.errors.items %}
-            {% for error in error_list %}
-                <strong>{{ field }}:</strong> {{ error }}<br>
-            {% endfor %}
-        {% endfor %}
-    </div>
-{% endif %}
-
-{% if form.success %}
-    <div class="alert alert-success">
-        {% for field, success_list in form.success.items %}
-            {% for success in success_list %}
-                <strong>{{ field }}:</strong> {{ success }}<br>
-            {% endfor %}
-        {% endfor %}
-    </div>
-{% endif %}
-
-
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('tracker-form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('success-message').style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = '/tracker_list'; // Redirect to the next page
+                    }, 2000); // Redirect after 2 seconds (adjust as needed)
+                } else {
+                    document.getElementById('error-message').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+</script>
 
 {% endblock %}

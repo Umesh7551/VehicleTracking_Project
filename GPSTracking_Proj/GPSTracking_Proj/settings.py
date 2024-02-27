@@ -23,8 +23,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--*7=om)!-#)(inn_3-7#5^w!4v-es$2aqunl6+5+i=#n929(7&'
-
+# SECRET_KEY = 'django-insecure--*7=om)!-#)(inn_3-7#5^w!4v-es$2aqunl6+5+i=#n929(7&'
+from django.core.management.utils import get_random_secret_key
+SECRET_KEY = get_random_secret_key()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'GPSTracking_App',
     'celery',
     'accounts',
+    'django_bootstrap5',
 ]
 
 
