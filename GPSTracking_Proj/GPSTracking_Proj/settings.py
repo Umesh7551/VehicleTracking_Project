@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'GPSTracking_App',
     'celery',
-    'accounts',
     'django_bootstrap5',
 ]
 
@@ -148,10 +147,11 @@ STATICFILES_DIRS = [STATICFILES_DIR,]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# AUTH_USER_MODEL = 'GPSTracking_App.FleetOwner'
+AUTH_USER_MODEL = 'GPSTracking_App.FleetOwner'
 # AUTH_USER_MODEL = 'accounts.FleetOwner'
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
+# AUTHENTICATION_BACKENDS = [
+#     # 'django.contrib.auth.backends.ModelBackend',
+#     'GPSTracking_App.backends.EmailBackend',
+# ]
 
-# LOGIN_REDIRECT_URL = '/accounts/profile/'
+LOGIN_REDIRECT_URL = 'accounts/profile/'

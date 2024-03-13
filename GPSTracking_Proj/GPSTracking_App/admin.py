@@ -6,15 +6,15 @@ from .models import FleetOwner, Car, GPSTracker, Tracker_data, Driver, RFID, Zon
 
 @admin.register(FleetOwner)
 class FleetOwnerAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'email', 'password', 'confirm_password', 'contact_number', 'address', 'aadhar_number',
+    list_display = ['id', 'first_name', 'last_name', 'email', 'contact_number', 'address', 'aadhar_number',
                     'pan_number', 'resident_proof']
-    search_fields = ['name', 'email', 'contact_number', 'aadhar_number', 'pan_number']
+    search_fields = ['email', 'contact_number', 'aadhar_number', 'pan_number']
 
 
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
     list_display = ['id', 'registration_number', 'registration_date', 'vehicle_name', 'colour', 'model',
-                    'chassis_number', 'tracker_id', 'insurance', 'puc', 'seating_capacity', 'fuel_type',
+                    'chassis_number', 'tracker', 'insurance', 'puc', 'seating_capacity', 'fuel_type',
                     'air_condition', 'owner']
     search_fields = ['registration_number', 'vehicle_name']
 

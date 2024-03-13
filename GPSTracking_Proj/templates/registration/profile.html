@@ -5,6 +5,15 @@
 
 {% block content %}
 <h2>User Profile</h2>
+{% if request.user.is_authenticated %}
+  {#<p>{{ request.user.username }}</p>#}
+  <a href="{% url 'logout_user' %}">Logout</a>
+ <a href="{% url 'tracker_data' request.user.id %}">Dashboard</a>
+  <a href="{% url 'add_car' %}">Add Car</a>
+{% else %}
+  <a href="{% url 'login' %}">Login</a>
+  <a href="{% url 'signup' %}">Signup</a>
+{% endif %}
     <p>Welcome, {{ user.username }}!</p>
 
 

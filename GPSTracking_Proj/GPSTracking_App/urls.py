@@ -2,19 +2,25 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from . import views
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
+
+# from .views import SignUpView
 
 # from .views import FleetOwnerLoginView
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('login/', LoginView.as_view(), name='login'),
+    path('signup/', views.signup, name='signup'),
+    path('login/', views.login, name='login'),
+    # path('login/', LoginView.as_view(), name='login'),
+    path('logout_user/', views.logout_user, name='logout_user'),
+    # path('signup/', SignUpView.as_view(), name='signup'),
     path('accounts/profile/', views.profile, name='profile'),
     path('add_fleet_owner/', views.add_fleet_owner, name='add_fleet_owner'),
     path('fleet_owner_list/', views.fleet_owner_list, name='fleet_owner_list'),
     path('update_fleet_owner/<int:id>/', views.update_fleetowner, name='update_fleetowner'),
     path('add_tracker_data/', views.add_tracker_data, name='add_tracker_data'),
-    path('dashboard/', views.tracker_data, name='tracker_data'),
+    path('tracker_data/<int:id>/', views.tracker_data, name='tracker_data'),
     path('dashboard1/', views.tracker_data1, name='tracker_data1'),
     path('add_car/', views.add_car, name='add_car'),
     path('car_list/', views.car_list, name='car_list'),

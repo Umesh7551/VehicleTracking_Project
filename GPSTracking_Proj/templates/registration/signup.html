@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% block title %} Welcome to GPS Tracking Application {% endblock %}
+
+
+{% block content %}
+
+<h2>Sign Up</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% bootstrap_button button_type="submit" content="Sign Up" %}
+    {% bootstrap_button button_type="reset" content="Cancel" %}
+</form>
+
+<a href="{% url 'login' %}">Already have account?</a>
+{% endblock %}

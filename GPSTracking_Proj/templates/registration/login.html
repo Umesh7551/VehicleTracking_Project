@@ -1,45 +1,22 @@
 {% extends 'base.html' %}
-
+{% load django_bootstrap5 %}
 {% block title %} Welcome to GPS Tracking Application {% endblock %}
 
 
 {% block content %}
 
+<h2>Login</h2>
+<form action="{% url 'login' %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% bootstrap_button button_type="submit" content="Login" %}
+    {% bootstrap_button button_type="reset" content="Cancel" %}
 
 
-<div class="wrapper">
-    <div class="form-wrapper">
-      <h2 class="title">Login to Your Account</h2>
-      <form action="{% url 'login' %}" method="POST" id="form" class="form">
-        {% csrf_token %}
-        <div class="form-group">
-          <label >
-            Email:
-          </label>
-          {{ form.username }}
-<!--          <input id="email" type="email" name="email" placeholder="someone@gmail.com" required>-->
-          <p id="emailError"></p>
-        </div>
-        <div class="form-group">
-          <label >
-            Password:
-          </label>
-            {{ form.password }}
-<!--          <input id="password" type="password" name="password" placeholder="Enter Password" required>-->
-          <p id="passwordError"></p>
-        </div>
-        <input type="submit" value="Login">
-      </form>
-      {% if messages %}
-  <ul class="messages">
-    {% for message in messages %}
-      <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-  </ul>
-{% endif %}
-    </div>
-    <div class="success-msg-container">
-      <h2 id="msg" class="msg">You have provided the correct details and your form will be processed</h2>
-    </div>
-  </div>
+</form>
+{% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+<a href="{% url 'signup' %}">Don't have Account Create</a>
 {% endblock %}
