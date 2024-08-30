@@ -7,14 +7,23 @@
 <h2>User Profile</h2>
 {% if request.user.is_authenticated %}
   {#<p>{{ request.user.username }}</p>#}
-  <a href="{% url 'logout_user' %}">Logout</a>
- <a href="{% url 'tracker_data' request.user.id %}">Dashboard</a>
-  <a href="{% url 'add_car' %}">Add Car</a>
+<p>Welcome, {{ user.username }}!</p>
+  <a class="btn btn-danger" href="{% url 'logout_user' %}">Logout</a>
+ <a class="btn btn-success" href="{% url 'tracker_data' %}">Dashboard</a>
+  <a class="btn btn-info" href="{% url 'add_car' %}">Add Smart Wheel</a>
+  <a class="btn btn-info" href="{% url 'car_list' %}">Smart Wheel List</a>
+  <a class="btn btn-info" href="{% url 'add_driver' %}">Add Driver</a>
+  <a class="btn btn-info" href="{% url 'driver_list' %}">Driver List</a>
+  <a class="btn btn-info" href="{% url 'add_tracker' %}">Add Tracker</a>
+  <a class="btn btn-info" href="{% url 'tracker_list' %}">Tracker List</a>
+  <a class="btn btn-info" href="{% url 'add_rfid' %}">Add RFID</a>
+  <a class="btn btn-info" href="{% url 'rfid_list' %}">RFID List</a>
+
 {% else %}
   <a href="{% url 'login' %}">Login</a>
   <a href="{% url 'signup' %}">Signup</a>
 {% endif %}
-    <p>Welcome, {{ user.username }}!</p>
+
 
 
 {% endblock %}

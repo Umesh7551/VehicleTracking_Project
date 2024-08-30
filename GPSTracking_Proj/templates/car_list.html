@@ -40,10 +40,18 @@
             <td>{{ car.chassis_number }}</td>
             <td>{{ car.tracker_id }}</td>
             <td>{{ car.insurance }}</td>
-            <td>{{ car.puc }}</td>
+            {% if car.puc %}
+                <td>Yes</td>
+            {% else %}
+                <td>No</td>
+            {% endif %}
             <td>{{ car.seating_capacity }}</td>
             <td>{{ car.fuel_type }}</td>
-            <td>{{ car.air_condition }}</td>
+            {% if car.air_condition %}
+                <td>Yes</td>
+            {% else %}
+                <td>No</td>
+            {% endif %}
             <td>{{ car.owner }}</td>
             <td><a href="{% url 'update_car' car.id %}">Update Car</a></td>
         </tr>

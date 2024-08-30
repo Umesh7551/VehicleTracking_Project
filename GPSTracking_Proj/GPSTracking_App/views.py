@@ -1,5 +1,4 @@
 import time
-
 from django.contrib.auth.decorators import login_required
 # from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponse, JsonResponse
@@ -13,6 +12,9 @@ from .tasks import process_tracker_data  # Import the Celery task
 from .forms import FleetOwnerForm, CarForm, TrackerForm, DriverForm, RFIDForm, SignUpForm, LoginForm
 from .models import FleetOwner, Tracker_data, Car, GPSTracker, Driver, RFID
 # from django.utils import timezone
+# import requests
+from .utils import send_tracker_data_to_api
+
 
 # Create your views here.
 # from login_required import login_not_required
@@ -55,8 +57,9 @@ def login(request):
             django_login(request, user)  # Log the user in
             return redirect('profile')  # Redirect to profile page
         else:
+            form = LoginForm()
             # Authentication failed
-            return render(request, 'registration/login.html', {'error': 'Invalid email or password'})
+            return render(request, 'registration/login.html', {'error': 'Invalid email or password', 'form': form})
     else:
         form = LoginForm()
         return render(request, 'registration/login.html', {'form': form})
@@ -89,7 +92,7 @@ def fleet_owner_list(request):
 # - Update FleetOwner
 @login_required
 def update_fleetowner(request, id):
-    fleetowner = get_object_or_404(FleetOwner, pk=id)
+    fleetowner = get_object_or_404(FleetOwner, id=id)
     if request.method == 'POST':
         form = FleetOwnerForm(request.POST, instance=fleetowner)
         if form.is_valid():
@@ -351,22 +354,66 @@ def parse_gps_tracker_data(request):
 #     context = {'tracker_data_list': tracker_data_list, 'fleetowner': fleetowner}
 #     return render(request, 'dashboard.html', context)
 
+# @login_required
+# def tracker_data(request, id):
+#     """
+#     Retrieves tracker data associated with a specific FleetOwner.
+#
+#     Args:
+#         request (HttpRequest): The incoming HTTP request.
+#         id (int): The ID of the FleetOwner.
+#
+#     Returns:
+#         HttpResponse: A rendered template with the retrieved tracker data or an error message
+#                       if the FleetOwner is not found.
+#     """
+#
+#     try:
+#         fleetowner = FleetOwner.objects.get(pk=id)
+#     except FleetOwner.DoesNotExist:
+#         return render(request, 'error.html', {'message': 'FleetOwner not found'})
+#
+#     # Retrieve all cars associated with the FleetOwner
+#     cars = Car.objects.filter(owner=fleetowner)
+#
+#     # Check if any cars are associated with the FleetOwner
+#     if not cars.exists():
+#         return render(request, 'error.html', {'message': 'No cars found for this FleetOwner'})
+#
+#     # Create an empty list to store tracker data for all cars
+#     tracker_data_list = []
+#
+#     # Loop through each car and retrieve its tracker data
+#     for car in cars:
+#         # Retrieve tracker data for the current car
+#         tracker_data_for_car = Tracker_data.objects.filter(car=car)
+#
+#         # Extend the tracker_data_list with the tracker data for the current car
+#         tracker_data_list.extend(tracker_data_for_car)
+#
+#     context = {'tracker_data_list': tracker_data_list, 'fleetowner': fleetowner}
+#     return render(request, 'dashboard.html', context)
+
 @login_required
-def tracker_data(request, id):
+def tracker_data(request):
     """
-    Retrieves tracker data associated with a specific FleetOwner.
+    Retrieves tracker data associated with the logged-in FleetOwner.
 
     Args:
         request (HttpRequest): The incoming HTTP request.
-        id (int): The ID of the FleetOwner.
 
     Returns:
         HttpResponse: A rendered template with the retrieved tracker data or an error message
                       if the FleetOwner is not found.
     """
 
+    # Retrieve the username of the logged-in user
+    username = request.user.username
+    print("Username=============>", username)
+
+    # Attempt to retrieve the FleetOwner based on the username
     try:
-        fleetowner = FleetOwner.objects.get(pk=id)
+        fleetowner = FleetOwner.objects.get(username=username)
     except FleetOwner.DoesNotExist:
         return render(request, 'error.html', {'message': 'FleetOwner not found'})
 
@@ -393,11 +440,38 @@ def tracker_data(request, id):
 
 
 
-
-
 @login_required
 def tracker_data1(request):
-    tracker_data_list = Tracker_data.objects.all()
+    # tracker_data_list = Tracker_data.objects.all()
+    # Retrieve the username of the logged-in user
+    username = request.user.username
+    print("Username=============>", username)
+
+    # Attempt to retrieve the FleetOwner based on the username
+    try:
+        fleetowner = FleetOwner.objects.get(username=username)
+    except FleetOwner.DoesNotExist:
+        return render(request, 'error.html', {'message': 'FleetOwner not found'})
+
+    # Retrieve all cars associated with the FleetOwner
+    cars = Car.objects.filter(owner=fleetowner)
+
+    # Check if any cars are associated with the FleetOwner
+    if not cars.exists():
+        return render(request, 'error.html', {'message': 'No cars found for this FleetOwner'})
+
+    # Create an empty list to store tracker data for all cars
+    tracker_data_list = []
+
+    # Loop through each car and retrieve its tracker data
+    for car in cars:
+        # Retrieve tracker data for the current car
+        tracker_data_for_car = Tracker_data.objects.filter(car=car)
+
+        # Extend the tracker_data_list with the tracker data for the current car
+        tracker_data_list.extend(tracker_data_for_car)
+
+    context = {'tracker_data_list': tracker_data_list, 'fleetowner': fleetowner}
     return render(request, 'dashboard1.html', context={'tracker_data_list': tracker_data_list})
 
 # - Add Car
@@ -599,3 +673,11 @@ def profile(request):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+
+# Cron Job or Periodic Task
+def send_tracker_data_periodically():
+    while True:
+        send_tracker_data_to_api(None)  # Sending tracker data
+        time.sleep(10)  # Wait for 10 seconds before sending the next update
+

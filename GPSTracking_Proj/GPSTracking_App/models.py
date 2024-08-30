@@ -30,6 +30,7 @@ class FleetOwner(AbstractUser):
         hashed_password = hashlib.sha256(raw_password.encode()).hexdigest()
         return self.password == hashed_password
 
+
 class GPSTracker(models.Model):
     serial_number = models.CharField(verbose_name='Serial Number', max_length=200, unique=True)
     # car = models.OneToOneField(Car, on_delete=models.CASCADE)
@@ -87,7 +88,7 @@ class Tracker_data(models.Model):
     ignition = models.BooleanField(verbose_name='Ignition', default=1)
     air_condition = models.CharField(verbose_name='Air Condition', max_length=10)
     # fleet_owner = models.ForeignKey(FleetOwner, on_delete=models.CASCADE, blank=True, default='')
-
+    status = models.CharField(max_length=2, default='01')  # Status field
     class Meta:
         db_table = 'tracker_data'
 

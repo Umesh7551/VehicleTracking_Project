@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+from django.core.management.utils import get_random_secret_key
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / 'templates'
@@ -24,7 +24,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure--*7=om)!-#)(inn_3-7#5^w!4v-es$2aqunl6+5+i=#n929(7&'
-from django.core.management.utils import get_random_secret_key
+
 SECRET_KEY = get_random_secret_key()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,7 +40,12 @@ CELERY_RESULT_BACKEND = 'rpc://'
 # CELERY_BROKER_URL = 'amqp://rabbitmq'
 CELERY_ENABLED = True
 # CELERY_DEFAULT_EXCHANGE_TYPE: 'direct'
-
+CELERY_BEAT_SCHEDULE = {
+    'send-tracker-data-every-10-seconds': {
+        'task': 'GPSTracking_App.tasks.send_tracker_data_periodically',
+        'schedule': 10.0,  # Execute every 10 seconds
+    },
+}
 # Application definition
 
 INSTALLED_APPS = [

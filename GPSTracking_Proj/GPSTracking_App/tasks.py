@@ -1,8 +1,9 @@
 # tasks.py
 from celery import shared_task, current_task
 from django.db import DatabaseError
-
 from .models import Tracker_data
+from .utils import send_tracker_data_to_api
+import time
 @shared_task
 def process_tracker_data(data):
     # print(data)
@@ -83,3 +84,11 @@ def process_tracker_data(data):
 #     tracker_data.save()
 #
 #     print(f'Tracker_data for car {registration_number} updated successfully.')
+
+
+
+@shared_task
+def send_tracker_data_periodically():
+    while True:
+        send_tracker_data_to_api(None)  # Sending tracker data
+        time.sleep(10)  # Wait for 10 seconds before sending the next update

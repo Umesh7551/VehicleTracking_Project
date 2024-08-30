@@ -113,7 +113,7 @@ color: black;
 position: relative;
 width: 100%;
 text-align: justify;
-line-height: inherit;
+line-height: normal;
 
 }
 

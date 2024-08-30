@@ -1,8 +1,7 @@
 from django import forms
-from django.contrib.auth.models import User
-
 from .models import FleetOwner, Car, GPSTracker, Driver, RFID
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 class FleetOwnerForm(forms.ModelForm):
     class Meta:
