@@ -57,9 +57,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'GPSTracking_App',
     'celery',
-    'django_bootstrap5',
+    'crispy_forms',
+    'crispy_bootstrap5'
 ]
-
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'GPSTracking_App.middleware.RoleBasedRedirectionMiddleware',
 ]
 
 ROOT_URLCONF = 'GPSTracking_Proj.urls'
@@ -102,7 +104,7 @@ DATABASES = {
     # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'gps_tracking_db_new',
+        'NAME': 'fleet_tracking_db',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': '127.0.0.1',
@@ -152,11 +154,11 @@ STATICFILES_DIRS = [STATICFILES_DIR,]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'GPSTracking_App.FleetOwner'
-# AUTH_USER_MODEL = 'accounts.FleetOwner'
-# AUTHENTICATION_BACKENDS = [
-#     # 'django.contrib.auth.backends.ModelBackend',
-#     'GPSTracking_App.backends.EmailBackend',
-# ]
-
-LOGIN_REDIRECT_URL = 'accounts/profile/'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+MAIL_USE_SSL = True
+EMAIL_HOST_USER = 'hindole.umesh@gmail.com'  # Your email address
+MAIL_DEFAULT_SENDER = 'hindole.umesh@gmail.com'
+EMAIL_HOST_PASSWORD = 'mafk rdju hfnv orib'

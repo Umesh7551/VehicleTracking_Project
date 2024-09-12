@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
-{% load django_bootstrap5 %}
-{% block title %} Welcome to GPS Tracking Application {% endblock %}
+
+{% load crispy_forms_tags %}
+{% block title %} Login | Welcome to Wiztrack Fleet Tracking System {% endblock %}
 
 
 {% block content %}
@@ -8,13 +9,23 @@
 <h2>Login</h2>
 <form action="{% url 'login' %}" method="POST">
     {% csrf_token %}
-    {% bootstrap_form form %}
-    {% bootstrap_button button_type="submit" content="Login" %}
-    {% bootstrap_button button_type="reset" content="Cancel" %}
+    {{ form|crispy }}
+    <input type="submit" value="Login" class="btn btn-primary" style="width:100px;">
+    <input type="reset" value="Cancel" class="btn btn-danger" style="width:100px;">
+
 
 
 </form>
-{% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
+
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if 'error' in message.tags %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<a href="{% url 'signup' %}">Don't have Account Create</a>
 {% endblock %}

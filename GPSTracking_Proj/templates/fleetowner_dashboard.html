@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %} Fleetowner Dashboard | Fleet Tracking System {% endblock %}
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if 'error' in message.tags %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<h1> Fleet Owner Dashbaord Page</h1>
+{% if request.user.is_authenticated %}
+
+    <a class="btn btn-danger" href="{% url 'logout_user' %}">Logout</a>
+    <a class="btn btn-info" href="{% url 'profile' %}">Profile</a>
+    <a class="btn btn-success" href="{% url 'tracker_data' %}">Dashboard</a>
+    <a class="btn btn-info" href="{% url 'add_car' %}">Add Car</a>
+    <a class="btn btn-info" href="{% url 'car_list' %}">Car List</a>
+    <a class="btn btn-info" href="{% url 'add_driver' %}">Add Driver</a>
+    <a class="btn btn-info" href="{% url 'driver_list' %}">Driver List</a>
+    <a class="btn btn-info" href="{% url 'add_tracker' %}">Add Tracker</a>
+    <a class="btn btn-info" href="{% url 'tracker_list' %}">Tracker List</a>
+    <a class="btn btn-info" href="{% url 'add_rfid' %}">Add RFID</a>
+    <a class="btn btn-info" href="{% url 'rfid_list' %}">RFID List</a><br/><br/>
+    <a class="btn btn-info" href="{% url 'add_support_user' %}">Add FleetOwner Support User</a>
+    <a class="btn btn-info" href="{% url 'fleetowner_support_user_list' %}">FleetOwner Support User List</a>
+
+{% endif %}
+
+{% endblock %}
+
+
+
+

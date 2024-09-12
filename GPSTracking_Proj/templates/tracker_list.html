@@ -21,9 +21,11 @@
         <tr>
             <td>{{ tracker.id }}</td>
             <td>{{ tracker.serial_number }}</td>
-            <td></td>
+            <td><a href="{% url 'update_tracker' tracker.id %}"><i class="fa-sharp fa-solid fa-pen" title="Update Tracker"></i></a> | <a href="{% url 'delete_tracker' tracker.id %}" class="delete-link" data-tracker-id="{{ tracker.id }}"><i class="fa-solid fa-trash" title="Delete Tracker"></i></a></td>
         </tr>
         {% endfor %}
+    {% else %}
+    You have no Tracker added
     {% endif %}
     </tbody>
 

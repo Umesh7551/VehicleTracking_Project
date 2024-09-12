@@ -8,8 +8,8 @@
 <form method="post" action="{% url 'update_car' car.id %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <button class="btn btn-primary" type="submit">Update Car</button>
-    <button class="btn btn-danger" type="reset">Cancel</button>
+    <button class="btn btn-primary" type="submit" style="width:100px;">Update Car</button>
+    <button class="btn btn-danger" type="reset" style="width:100px;">Cancel</button>
 </form>
 
 

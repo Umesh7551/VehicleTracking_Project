@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 {% block title %} Add Fleet Owner {% endblock %}
 
 
@@ -16,10 +16,9 @@
 
 <form id="fleet-owner-form" action="{% url 'add_fleet_owner' %}" method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
-    {% bootstrap_form form %}
-
-    {% bootstrap_button button_type="submit" content="Add Fleet Owner" %}
-    {% bootstrap_button button_type="reset" content="Cancel" %}
+    {{ form|crispy }}
+    <input type="submit" name="Add Fleet Owner" class="btn btn-primary">
+    <input type="reset" name="Cancel" class="btn btn-danger">
 </form>
 <script>
     document.addEventListener('DOMContentLoaded', function () {

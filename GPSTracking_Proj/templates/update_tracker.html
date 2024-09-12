@@ -1,0 +1,16 @@
+
+{% extends 'base.html' %}
+
+{% block title %} Update Tracker  {% endblock %}
+
+{% block content %}
+<h2>Update Tracker</h2>
+<form method="post" action="{% url 'update_tracker' tracker.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">Update Tracker</button>
+    <button class="btn btn-danger" type="reset">Cancel</button>
+</form>
+
+
+{% endblock %}

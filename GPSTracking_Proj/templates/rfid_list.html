@@ -27,6 +27,9 @@
             <td><a href="{% url 'update_rfid' rfid.id %}"><i class="fa-sharp fa-solid fa-pen" title="Update RFID"></i></a> | <a href="{% url 'delete_rfid' rfid.id %}"><i class="fa-solid fa-trash" title="Delete RFID"></i></a></td>
         </tr>
         {% endfor %}
+
+    {% else %}
+    You have no RFID Added
     {% endif %}
     </tbody>
 

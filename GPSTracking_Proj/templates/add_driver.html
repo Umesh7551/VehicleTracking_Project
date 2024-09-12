@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 {% block title %} Add Driver {% endblock %}
 
 
@@ -14,10 +14,9 @@
 </div>
 <form id="driver_form" action="{% url 'add_driver' %}" method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
-    {% bootstrap_form form %}
-
-    {% bootstrap_button button_type="submit" content="Add Driver" %}
-    {% bootstrap_button button_type="reset" content="Cancel" %}
+    {{ form|crispy }}
+    <input type="submit" value="Add Driver" class="btn btn-primary" style="width:100px;">
+    <input type="reset" value="Cancel" class="btn btn-danger" style="width:100px;">
 </form>
 
 <script>

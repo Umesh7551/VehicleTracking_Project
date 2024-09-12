@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %} Add RFID {% endblock %}
 
 
@@ -8,8 +8,9 @@
 <h1>Add RFID</h1>
 <form action="{% url 'add_rfid' %}" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input class="btn btn-success" type="submit" value="Add RFID">
+    {{ form|crispy }}
+    <input class="btn btn-primary" type="submit" value="Add RFID" style="width:100px;">
+    <input class="btn btn-danger" type="reset" value="Cancel" style="width:100px;">
 </form>
 
 {% if form.errors %}

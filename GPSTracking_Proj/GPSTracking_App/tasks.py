@@ -35,7 +35,7 @@ def process_tracker_data(data):
 #
 # @shared_task
 # def process_tracker_data_async(car_registration_number, tracker_data_id):
-#     # Retrieve Car instance by registration number
+#     # Retrieve Car instance by accounts number
 #     car = Car.objects.get(registration_number=car_registration_number)
 #     print(car)
 #     # Retrieve Tracker_data instance by ID
@@ -59,7 +59,7 @@ def process_tracker_data(data):
 #     try:
 #         car = Car.objects.get(registration_number=registration_number)
 #     except Car.DoesNotExist:
-#         print(f'Car with registration number {registration_number} not found.')
+#         print(f'Car with accounts number {registration_number} not found.')
 #         return
 #
 #     tracker_data_instances = Tracker_data.objects.filter(car=car)

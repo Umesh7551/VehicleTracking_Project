@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 {% block title %} Add Car  {% endblock %}
 
 
 {% block content %}
-<h1> Add Smart Wheel</h1>
+<h1> Add Car</h1>
+<p>Logged in as: {{ user.username }}</p>  <!-- Display the logged-in user's username -->
 <div id="success-message" class="alert alert-success" style="display: none;">
     Smart Wheel added successfully. Redirecting to Fleet Owner List...
 </div>
@@ -13,8 +14,10 @@
 </div>
 <form action="{% url 'add_car' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input class="btn btn-success" type="submit" value="Add Car">
+   {{ form|crispy }}
+    <input type="submit" value="Add Car" class="btn btn-primary" style="width:100px;">
+    <input type="reset" value="Cancel" class="btn btn-danger" style="width:100px;">
+
 </form>
 
 {% if form.errors %}

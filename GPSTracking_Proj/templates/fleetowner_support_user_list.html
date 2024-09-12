@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %} Fleetowner Support List  {% endblock %}
+
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if 'error' in message.tags %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+<h1> Fleetowner Support List</h1>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Address 1</th>
+            <th>Address 2</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Pin</th>
+            <th>Country</th>
+            <th>Mobile/Whatsapp Number</th>
+            <th>Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+    {% if support_users %}
+        {% for user in support_users %}
+        <tr>
+            <td>{{ user.fleetowner_support_user.id }}</td>
+            <td>{{ user.fleetowner_support_user.first_name }}</td>
+            <td>{{ user.fleetowner_support_user.last_name }}</td>
+            <td>{{ user.fleetowner_support_user.email }}</td>
+            <td>{{ user.fleetowner_support_user.username }}</td>
+            <td>{{ user.fleetowner_support_user.address1 }}</td>
+            <td>{{ user.fleetowner_support_user.address2 }}</td>
+            <td>{{ user.fleetowner_support_user.city }}</td>
+            <td>{{ user.fleetowner_support_user.state }}</td>
+            <td>{{ user.fleetowner_support_user.pin }}</td>
+            <td>{{ user.fleetowner_support_user.country }}</td>
+            <td>{{ user.fleetowner_support_user.mobile }}</td>
+            <td><a class="btn btn-info" href="{% url 'edit_support_user' user.fleetowner_support_user.id %}"><i class="fa-sharp fa-solid fa-pen" title="Edit Fleetowner Support"></i></a>
+                <a class="btn btn-danger" href="{% url 'delete_support_user' user.fleetowner_support_user.id %}"><i class="fa-solid fa-trash" title="Delete Fleetowner Support"></i></a>
+</td>
+
+        </tr>
+        {% endfor %}
+    {% else %}
+    You have no Fleetowner Support added
+    {% endif %}
+    </tbody>
+
+  </table>
+</div>
+
+
+{% endblock %}

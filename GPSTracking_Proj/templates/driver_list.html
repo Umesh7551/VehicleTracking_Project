@@ -38,6 +38,8 @@
             <td><a href="{% url 'update_driver' driver.id %}"><i class="fa-sharp fa-solid fa-pen" title="Update Driver"></i></a> | <a href="{% url 'delete_driver' driver.id %}" class="delete-link" data-driver-id="{{ driver.id }}"><i class="fa-solid fa-trash" title="Delete Driver"></i></a></td>
         </tr>
         {% endfor %}
+    {% else %}
+     You have no drivers added
     {% endif %}
     </tbody>
 

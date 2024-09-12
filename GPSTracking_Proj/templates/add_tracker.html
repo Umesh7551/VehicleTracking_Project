@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 {% block title %} Add Tracker {% endblock %}
 
 {% block content %}
@@ -14,11 +14,10 @@
 
 <form id="tracker-form" action="{% url 'add_tracker' %}" method="post" novalidate>
     {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Add Tracker" class="btn btn-primary" style="width:100px;">
+    <input type="reset" value="Cancel" class="btn btn-danger" style="width:100px;">
 
-    {% bootstrap_form form %}
-
-    {% bootstrap_button button_type="submit" content="Add Tracker" %}
-    {% bootstrap_button button_type="reset" content="Cancel" %}
 
 </form>
 

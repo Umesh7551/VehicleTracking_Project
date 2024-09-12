@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %} Delete Fleetowner Support  {% endblock %}
+{% block content %}
+<h1>Delete Fleetowner Support </h1>
+<form method="post" action="{% url 'delete_support_user' user.fleetowner_support_user.id %}">
+    {% csrf_token %}
+    <p>Are you sure you want to delete {{ user.username }}?</p>
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'fleetowner_support_user_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+{% endblock %}

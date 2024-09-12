@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} GPS Tracker Data {% endblock %}
+{% block title %} GPS Tracker Data | Wiztrack Fleet Tracking System {% endblock %}
 
 
 {% block content %}
@@ -10,6 +10,7 @@
 <a class="btn btn-danger" href="{% url 'logout_user' %}">Logout</a>
 <div class="container">
     <div class="row" id="dashboard-content">
+        {% if tracker_data_list %}
         {% for data in tracker_data_list %}
             <div class="col-md-3 outer_block">
                 <div class="badge">
@@ -79,6 +80,10 @@
 
             </div>
             {% endfor %}
+        {% else %}
+            <strong>No Tracker data found</strong>
+        
+        {% endif %}
 
     </div>
 

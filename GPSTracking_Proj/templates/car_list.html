@@ -4,6 +4,14 @@
 
 
 {% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if 'error' in message.tags %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
 <h1> Car List</h1>
 <div class="table-responsive">
   <table class="table table-bordered">
@@ -38,7 +46,7 @@
             <td>{{ car.colour }}</td>
             <td>{{ car.model }}</td>
             <td>{{ car.chassis_number }}</td>
-            <td>{{ car.tracker_id }}</td>
+            <td>{{ car.tracker }}</td>
             <td>{{ car.insurance }}</td>
             {% if car.puc %}
                 <td>Yes</td>
@@ -52,14 +60,20 @@
             {% else %}
                 <td>No</td>
             {% endif %}
-            <td>{{ car.owner }}</td>
-            <td><a href="{% url 'update_car' car.id %}">Update Car</a></td>
+            <td>{{ car.owner.get_full_name }}</td>
+            <td><a class="btn btn-info" href="{% url 'update_car' car.id %}">Update Car</a>
+                <a class="btn btn-danger" href="{% url 'delete_car' car.id %}">Delete Car</a>
+</td>
+
         </tr>
         {% endfor %}
+    {% else %}
+    You have no cars added
     {% endif %}
     </tbody>
 
   </table>
 </div>
+
 
 {% endblock %}

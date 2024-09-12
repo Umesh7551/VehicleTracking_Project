@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Register | Welcome to Wiztrack Fleet Tracking System {% endblock %}
+
+
+{% block content %}
+
+<h2>Sign Up</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Register" class="btn btn-primary" style="width:100px;">
+    <input type="reset" value="Cancel" class="btn btn-danger" style="width:100px;">
+</form>
+
+<a href="{% url 'login' %}">Already have account?</a>
+{% endblock %}

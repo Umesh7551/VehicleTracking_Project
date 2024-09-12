@@ -1,16 +1,12 @@
 from django.contrib import admin
-from .models import FleetOwner, Car, GPSTracker, Tracker_data, Driver, RFID, Zone
+from .models import Car, GPSTracker, Tracker_data, Driver, RFID, Zone, Profile, FleetOwnerSupport
 
 
 # Register your models here.
 
-@admin.register(FleetOwner)
-class FleetOwnerAdmin(admin.ModelAdmin):
-    list_display = ['id', 'first_name', 'last_name', 'email', 'contact_number', 'address', 'aadhar_number',
-                    'pan_number', 'resident_proof']
-    search_fields = ['email', 'contact_number', 'aadhar_number', 'pan_number']
-
-
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['id', 'address1', 'address2', 'city', 'state', 'country', 'mobile', 'user_id', 'fleetowner']
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
     list_display = ['id', 'registration_number', 'registration_date', 'vehicle_name', 'colour', 'model',
@@ -49,3 +45,8 @@ class RFIDAdmin(admin.ModelAdmin):
 class ZoneAdmin(admin.ModelAdmin):
     list_display = ['id', 'zone_name']
     search_fields = ['zone_name']
+
+
+@admin.register(FleetOwnerSupport)
+class FleetOwnerSupportAdmin(admin.ModelAdmin):
+    list_display = ['id', 'fleetowner', 'fleetowner_support_user']

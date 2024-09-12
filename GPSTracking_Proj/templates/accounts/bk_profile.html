@@ -5,13 +5,13 @@
 
 {% block content %}
 <h2>User Profile</h2>
+
 {% if request.user.is_authenticated %}
-  {#<p>{{ request.user.username }}</p>#}
 <p>Welcome, {{ user.username }}!</p>
   <a class="btn btn-danger" href="{% url 'logout_user' %}">Logout</a>
- <a class="btn btn-success" href="{% url 'tracker_data' %}">Dashboard</a>
-  <a class="btn btn-info" href="{% url 'add_car' %}">Add Smart Wheel</a>
-  <a class="btn btn-info" href="{% url 'car_list' %}">Smart Wheel List</a>
+  <a class="btn btn-success" href="{% url 'tracker_data' %}">Dashboard</a>
+  <a class="btn btn-info" href="{% url 'add_car' %}">Add Car</a>
+  <a class="btn btn-info" href="{% url 'car_list' %}">Car List</a>
   <a class="btn btn-info" href="{% url 'add_driver' %}">Add Driver</a>
   <a class="btn btn-info" href="{% url 'driver_list' %}">Driver List</a>
   <a class="btn btn-info" href="{% url 'add_tracker' %}">Add Tracker</a>
@@ -20,8 +20,8 @@
   <a class="btn btn-info" href="{% url 'rfid_list' %}">RFID List</a>
 
 {% else %}
-  <a href="{% url 'login' %}">Login</a>
-  <a href="{% url 'signup' %}">Signup</a>
+<a class="btn btn-danger" href="{% url 'logout_user' %}">Logout</a>
+
 {% endif %}
 
 
