@@ -1,15 +1,30 @@
-
 {% extends 'base.html' %}
-
+{% load static %}
+{% load crispy_forms_tags %}
 {% block title %} Update RFID  {% endblock %}
 
 {% block content %}
-<h2>Update RFID</h2>
-<form method="post" action="{% url 'update_rfid' rfid.id %}">
+{% include 'vertical_menu.html' %}
+{% include 'navigation.html' %}
+
+<div class="container">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert {% if 'error' in message.tags %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+             role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    <h2>Update RFID</h2>
+    <form method="post" action="{% url 'update_rfid' rfid.id %}">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form|crispy }}
     <button class="btn btn-primary" type="submit">Update RFID</button>
 </form>
+</div>
+
 
 
 {% endblock %}

@@ -162,3 +162,7 @@ MAIL_USE_SSL = True
 EMAIL_HOST_USER = 'hindole.umesh@gmail.com'  # Your email address
 MAIL_DEFAULT_SENDER = 'hindole.umesh@gmail.com'
 EMAIL_HOST_PASSWORD = 'mafk rdju hfnv orib'
+
+
+# Default session expiry when "Remember Me" is not selected
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

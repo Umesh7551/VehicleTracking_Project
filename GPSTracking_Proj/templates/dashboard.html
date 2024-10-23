@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block title %} GPS Tracker Data | Wiztrack Fleet Tracking System {% endblock %}
 
 
 {% block content %}
+{% include 'vertical_menu.html' %}
+{% include 'navigation.html' %}
 
-<!--<h1>GPS Tracker Data</h1>-->
-<br/>
-<a class="btn btn-danger" href="{% url 'logout_user' %}">Logout</a>
 <div class="container">
     <div class="row" id="dashboard-content">
         {% if tracker_data_list %}
@@ -24,19 +24,19 @@
                     <span>Speed: {{ data.speed }}</span><br/>
                     <span>Accuracy: {{ data.accuracy }}</span><br/>
                     <span>Time: {{ data.timestamp }}</span><br/>
-                    <span>Panic: {{ data.panic }}</span><br/>
-                    {% if data.panic == True %}
+                    <span>Panic: {% if data.panic %} Yes {% else %} No {% endif %}</span><br/>
+                    {% if data.panic %}
                     <img src="{% static 'images/panic.png' %}" alt="Panic Image" title="Panic Button is pressed!!"
                          id="panic_image"
                          style="width: 20px; height: 20px; float: right;position: absolute; right: 0; top: 25px;">
 
                     {% endif %}
 
-                    <span>Ignition: {{ data.ignition }}</span><br/>
+                    <span>Ignition: {% if data.ignition %} ON {% else %} OFF {% endif %}</span><br/>
 
                     <!-- Add other fields as needed -->
                     <!-- Add this block to display green or red dot based on ignition value -->
-                    {% if data.ignition == True %}
+                    {% if data.ignition %}
                     <img src="{% static 'images/green-dot.png' %}" alt="Green Dot" title="Ignition is On"
                          id="ignition_on"
                          style="width: 20px; height: 20px; float: right;position: absolute; right: 0; top: 0;">

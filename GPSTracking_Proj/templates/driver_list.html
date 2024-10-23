@@ -1,50 +1,247 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% load crispy_forms_tags %}
 {% block title %} Driver List  {% endblock %}
 
 
 {% block content %}
-<h1> Driver List</h1>
-<div class="table-responsive">
-  <table class="table table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Driver Name</th>
-            <th>Driver Licence Number</th>
-            <th>Issue Date</th>
-            <th>Valid Till</th>
-            <th>Address</th>
-            <th>Upload Licence</th>
-            <th>Car</th>
-            <th>RFID Number</th>
-            <th>Actions</th>
 
-        </tr>
-    </thead>
-    <tbody>
-    {% if drivers_list %}
-        {% for driver in drivers_list %}
-        <tr>
-            <td>{{ driver.id }}</td>
-            <td>{{ driver.driver_name }}</td>
-            <td>{{ driver.driver_licence_number }}</td>
-            <td>{{ driver.issue_date }}</td>
-            <td>{{ driver.valid_till }}</td>
-            <td>{{ driver.address }}</td>
-            <td><img src="{{ driver.upload_licence.url }}" alt="{{ driver.driver_name }} Image" style="max-width: 100px; max-height: 100px;"></td>
-            <td>{{ driver.car }}</td>
-            <td>{{ driver.rfid }}</td>
-            <td><a href="{% url 'update_driver' driver.id %}"><i class="fa-sharp fa-solid fa-pen" title="Update Driver"></i></a> | <a href="{% url 'delete_driver' driver.id %}" class="delete-link" data-driver-id="{{ driver.id }}"><i class="fa-solid fa-trash" title="Delete Driver"></i></a></td>
-        </tr>
+
+
+
+<!--<h1> Driver List</h1>-->
+<!--<div class="table-responsive">-->
+<!--  <table class="table table-bordered">-->
+<!--    <thead class="table-dark">-->
+<!--        <tr>-->
+<!--            <th>ID</th>-->
+<!--            <th>Driver Name</th>-->
+<!--            <th>Driver Licence Number</th>-->
+<!--            <th>Issue Date</th>-->
+<!--            <th>Valid Till</th>-->
+<!--            <th>Address</th>-->
+<!--            <th>Upload Licence</th>-->
+<!--            <th>Car</th>-->
+<!--            <th>RFID Number</th>-->
+<!--            <th>Actions</th>-->
+
+<!--        </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    {% if drivers_list %}-->
+<!--        {% for driver in drivers_list %}-->
+<!--        <tr>-->
+<!--            <td>{{ driver.id }}</td>-->
+<!--            <td>{{ driver.driver_name }}</td>-->
+<!--            <td>{{ driver.driver_licence_number }}</td>-->
+<!--            <td>{{ driver.issue_date }}</td>-->
+<!--            <td>{{ driver.valid_till }}</td>-->
+<!--            <td>{{ driver.address }}</td>-->
+<!--            <td><img src="{{ driver.upload_licence.url }}" alt="{{ driver.driver_name }} Image" style="max-width: 100px; max-height: 100px;">-->
+<!--            <a class="btn btn-warning" href="{{ driver.upload_licence.url }}" target="_blank"> View</a></td>-->
+<!--            <td>{{ driver.car }}</td>-->
+<!--            <td>{{ driver.rfid }}</td>-->
+<!--            <td><a class="btn btn-info" href="{% url 'update_driver' driver.id %}"><i class="fa-sharp fa-solid fa-pen" title="Update Driver"></i></a> | <a href="{% url 'delete_driver' driver.id %}" class="delete-link btn btn-info" data-driver-id="{{ driver.id }}"><i class="fa-solid fa-trash" title="Delete Driver"></i></a></td>-->
+<!--        </tr>-->
+<!--        {% endfor %}-->
+<!--    {% else %}-->
+<!--     You have no drivers added-->
+<!--    {% endif %}-->
+<!--    </tbody>-->
+
+
+<!--  </table>-->
+<!--</div>-->
+<!--<div><a class="btn btn-info" href="{% url 'profile' %}">Back</a></div>-->
+
+{% include 'vertical_menu.html' %}
+{% include 'navigation.html' %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {% if 'error' in message.tags %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+             role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         {% endfor %}
-    {% else %}
-     You have no drivers added
-    {% endif %}
-    </tbody>
+        {% endif %}
+        <div class="row mb-3">
+            <div class="col-lg-4 col-md-6">
+                <div class="mt-3">
+
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#driverAdd">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             style="fill: rgb(255, 255, 255);transform: ;msFilter:;">
+                            <path
+                                    d="m20.772 10.155-1.368-4.104A2.995 2.995 0 0 0 16.559 4H7.441a2.995 2.995 0 0 0-2.845 2.051l-1.368 4.104A2 2 0 0 0 2 12v5c0 .738.404 1.376 1 1.723V21a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2h12v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2.277A1.99 1.99 0 0 0 22 17v-5a2 2 0 0 0-1.228-1.845zM7.441 6h9.117c.431 0 .813.274.949.684L18.613 10H5.387l1.105-3.316A1 1 0 0 1 7.441 6zM5.5 16a1.5 1.5 0 1 1 .001-3.001A1.5 1.5 0 0 1 5.5 16zm13 0a1.5 1.5 0 1 1 .001-3.001A1.5 1.5 0 0 1 18.5 16z">
+                            </path>
+                        </svg>
+                        Add Driver
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="driverAdd" tabindex="-1" style="display: none;" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;">
+                                        <path
+                                                d="m20.772 10.155-1.368-4.104A2.995 2.995 0 0 0 16.559 4H7.441a2.995 2.995 0 0 0-2.845 2.051l-1.368 4.104A2 2 0 0 0 2 12v5c0 .738.404 1.376 1 1.723V21a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2h12v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2.277A1.99 1.99 0 0 0 22 17v-5a2 2 0 0 0-1.228-1.845zM7.441 6h9.117c.431 0 .813.274.949.684L18.613 10H5.387l1.105-3.316A1 1 0 0 1 7.441 6zM5.5 16a1.5 1.5 0 1 1 .001-3.001A1.5 1.5 0 0 1 5.5 16zm13 0a1.5 1.5 0 1 1 .001-3.001A1.5 1.5 0 0 1 18.5 16z">
+                                        </path>
+                                    </svg>
+                                    <h5 class="modal-title" id="driverAddTitle">Add Driver</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{% url 'add_driver_and_list' %}" method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row mb-3">
+                                            <!-- Driver Name - Input Box -->
+                                            <div class="mb-3 col-lg-6 col-sm-12 col-md-12 col-12">
+<!--                                                <label class="form-label" for="driver_name">Driver Name</label>-->
+<!--                                                <input type="text" class="form-control" id="driver_name"-->
+<!--                                                       placeholder="Enter Driver Name">-->
+                                                <label class="form-label">{{ form.driver_name.label }}</label>
+                                                {{ form.driver_name }}
+                                            </div>
+
+                                            <!-- Driver Licence Number - Input Box -->
+                                            <div class="mb-3 col-lg-6 col-sm-12 col-md-12 col-12">
+<!--                                                <label class="form-label" for="driver-licence-number">Driver Licence-->
+<!--                                                    Number</label>-->
+<!--                                                <input type="text" class="form-control" id="driver-licence-number"-->
+<!--                                                       placeholder="Enter Licence Number">-->
+                                                <label class="form-label">{{ form.driver_licence_number.label }}</label>
+                                                {{ form.driver_licence_number }}
+                                            </div>
+
+                                            <!-- Issue Date - Datepicker -->
+                                            <div class="col-12 col-lg-6 col-md-6">
+<!--                                                <label class="form-label" for="issue-date">Issue Date</label>-->
+<!--                                                <input type="date" id="issue-date" class="form-control"-->
+<!--                                                       placeholder="YYYY-MM-DD">-->
+                                                <label class="form-label">{{ form.issue_date.label }}</label>
+                                                {{ form.issue_date }}
+                                            </div>
+
+                                            <!-- Valid Till - Datepicker -->
+                                            <div class="col-12 col-lg-6 col-md-6">
+<!--                                                <label class="form-label" for="valid-till">Valid Till</label>-->
+<!--                                                <input type="date" id="valid-till" class="form-control"-->
+<!--                                                       placeholder="YYYY-MM-DD">-->
+                                                <label class="form-label">{{ form.valid_till.label }}</label>
+                                                {{ form.valid_till }}
+                                            </div>
+
+                                            <!-- Address - Textarea -->
+                                            <div class="col-12 col-lg-12 col-md-12 mt-3">
+<!--                                                <label class="form-label" for="address">Address</label>-->
+<!--                                                <textarea id="address" class="form-control" rows="3"-->
+<!--                                                          placeholder="Enter Address"></textarea>-->
+                                                <label class="form-label">{{ form.address.label }}</label>
+                                                {{ form.address }}
+                                            </div>
+
+                                            <!-- Upload Licence - File Type -->
+                                            <div class="col-12 col-lg-6 col-md-6 mt-3">
+<!--                                                <label class="form-label" for="upload-licence">Upload Licence</label>-->
+<!--                                                <input type="file" id="upload-licence" class="form-control">-->
+                                                <label class="form-label">{{ form.upload_licence.label }}</label>
+                                                {{ form.upload_licence }}
+                                            </div>
+
+                                            <!-- Car - Dropdown List -->
+                                            <div class="mt-3 col-lg-6 col-sm-12 col-md-12 col-12">
+                                                <label class="form-label">{{ form.car.label }}</label>
+                                                <div class="form-group">{{ form.car }}</div>
+
+                                            </div>
+
+                                            <!-- RFID - Dropdown List -->
+                                            <div class="col-12 col-lg-12 col-md-12 mt-3">
+                                                <label class="form-label">{{ form.rfid.label }}</label>
+                                                {{ form.rfid }}
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary mt-2">Add Driver</button>
+                                        <button type="reset" class="btn btn-danger mt-2">Cancel</button>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="card">
+                <h5 class="card-header">Driver List</h5>
+                <div class="table-responsive text-nowrap">
+                    <!-- Driver Table with Dummy Data -->
+                    <table id="driverTable" class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Driver Name</th>
+                            <th>Driver Licence Number</th>
+                            <th>Issue Date</th>
+                            <th>Valid Till</th>
+                            <th>Address</th>
+                            <th>Upload Licence</th>
+                            <th>Car</th>
+                            <th>RFID Number</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if drivers_list %}
+                        {% for driver in drivers_list %}
+                        <tr>
+                            <td>{{ driver.id }}</td>
+                            <td>{{ driver.driver_name }}</td>
+                            <td>{{ driver.driver_licence_number }}</td>
+                            <td>{{ driver.issue_date }}</td>
+                            <td>{{ driver.valid_till }}</td>
+                            <td>{{ driver.address }}</td>
+                            <td><img src="{{ driver.upload_licence.url }}" alt="{{ driver.driver_name }} Image"
+                                     style="max-width: 100px; max-height: 100px;">
+                                <a href="{{ driver.upload_licence.url }}" target="_blank"> View</a></td>
+                            <td>{{ driver.car }}</td>
+                            <td>{{ driver.rfid }}</td>
+                            <td><a class="btn btn-info" href="{% url 'update_driver' driver.id %}"><i
+                                    class="fa-sharp fa-solid fa-pen" title="Update Driver"></i>Edit</a> | <a
+                                    href="{% url 'delete_driver' driver.id %}" class="delete-link btn btn-danger"
+                                    data-driver-id="{{ driver.id }}"><i class="fa-solid fa-trash"
+                                                                        title="Delete Driver"></i>Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        You have no drivers added
+                        {% endif %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
 
 
-  </table>
+        </div>
+    </div>
 </div>
-<div><a class="btn btn-info" href="{% url 'profile' %}">Back</a></div>
-{% endblock %}
+
+
+
+        {% endblock %}

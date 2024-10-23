@@ -1,16 +1,182 @@
-
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %} Update Car  {% endblock %}
 
 {% block content %}
-<h2>Update Car</h2>
-<form method="post" action="{% url 'update_car' car.id %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary" type="submit" style="width:100px;">Update Car</button>
-    <button class="btn btn-danger" type="reset" style="width:100px;">Cancel</button>
-</form>
+{% include 'vertical_menu.html' %}
+{% include 'navigation.html' %}
+<div class="container">
+    <h2>Update Car</h2>
+    <form method="post" action="{% url 'update_car' car.id %}">
+        {% csrf_token %}
+<!--        {{ form|crispy }}-->
+        <div class="row mb-3">
+            <div class="mb-3 col-lg-6">
+<!--            <label class="form-label">Registration Number</label>-->
+                <label class="form-label">{{ form.registration_number.label }}</label>
+                <input class="form-control" name="registration_number"
+                       type="text"
+                       value="{{ car.registration_number }}">
+            </div>
+            <div class="mb-3 col-lg-6">
+<!--            <label class="form-label">Registration Date</label>-->
+                <label class="form-label">{{ form.registration_date.label }}</label>
+                <input class="form-control" name="registration_date"
+                       type="date"
+                       value="{{ car.registration_date|date:'Y-m-d' }}">
+            </div>
+            <div class="mb-3 col-lg-4">
+                <label class="form-label">{{ form.vehicle_name.label }}</label>
+                <input class="form-control" id="vehicle_name" name="vehicle_name"
+                       type="text" value="{{ car.vehicle_name }}">
+            </div>
+            <div class="mb-3 col-lg-4">
+                <label class="form-label">{{ form.colour.label }}</label>
+                <input type="text" class="form-control" id="colour"
+                       name="colour" value="{{ car.colour }}">
+            </div>
+            <div class="mb-3 col-lg-4">
+                <label class="form-label">{{ form.model.label }}</label>
+                <input type="text" class="form-control" id="model"
+                       name="model" value="{{ car.model }}">
+            </div>
+            <div class="mb-3 col-lg-4">
+                <label class="form-label">{{ form.chassis_number.label }}</label>
+                <input type="text" class="form-control" id="chassis_number"
+                       name="chassis_number"
+                       value="{{ car.chassis_number }}">
+            </div>
+            <div class="mb-3 col-lg-4 form-group">
+                <label class="form-label">{{ form.tracker.label }}</label>
+                <select class="form-select" id="tracker" name="tracker">
+                    <option value="{{ car.tracker.id }}">{{ car.tracker }}
+                    </option>
+                </select>
 
+            </div>
+            <div class="mb-3 col-lg-4">
+                <input type="checkbox" class="form-check" id="insurance"
+                       name="insurance"
+                       value="True" {% if car.insurance %}checked{% endif %}> Insurance
+                <input type="checkbox" class="form-check" id="puc"
+                       name="puc"
+                       value="True" {% if car.puc %}checked{% endif %}> PUC
 
+            </div>
+            <div class="mb-3 col-lg-4">
+                <label class="form-label">{{ form.seating_capacity.label }}</label>
+                <input type="text" class="form-control" id="seating_capacity"
+                       name="seating_capacity"
+                       value="{{ car.seating_capacity }}">
+            </div>
+            <div class="mb-3 col-lg-4">
+                <label class="form-label">{{ form.fuel_type.label }}</label>
+                <input type="text" class="form-control" id="fuel_type"
+                       name="fuel_type"
+                       value="{{ car.fuel_type }}">
+            </div>
+            <div class="mb-3 col-lg-4">
+                <input type="checkbox" class="form-check" id="air_condition"
+                       name="air_condition"
+                       value="True" {% if car.air_condition %}checked{% endif %}> Air Condition
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit" style="width:150px;">Update Car</button>
+        <button class="btn btn-danger" type="reset" style="width:100px;">Cancel</button>
+    </form>
+</div>
+
+<!-- Update Modal -->
+<!--<div aria-hidden="true" class="modal fade" id="carUpdate{{ car.id }}" tabindex="-1">-->
+<!--    <div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title">Update Car</h5>-->
+<!--                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"-->
+<!--                        type="button"></button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--&lt;!&ndash;            <form action="{% url 'add_car_and_list' %}" method="POST">&ndash;&gt;-->
+<!--                <form action="{% url 'update_car' car.id %}" method="POST">-->
+<!--                    {% csrf_token %}-->
+<!--                    <input name="car_id" type="hidden" value="{{ car.id }}">-->
+<!--                    <div class="row mb-3">-->
+<!--                        <div class="mb-3 col-lg-6">-->
+<!--&lt;!&ndash;                                                            <label class="form-label">Registration Number</label>&ndash;&gt;-->
+<!--                            <label class="form-label">{{ form.registration_number.label }}</label>-->
+<!--                            <input class="form-control" name="registration_number"-->
+<!--                                   type="text"-->
+<!--                                   value="{{ car.registration_number }}">-->
+<!--                        </div>-->
+<!--                        <div class="mb-3 col-lg-6">-->
+<!--&lt;!&ndash;                                                            <label class="form-label">Registration Date</label>&ndash;&gt;-->
+<!--                            <label class="form-label">{{ form.registration_date.label }}</label>-->
+<!--                            <input class="form-control" name="registration_date"-->
+<!--                                   type="date"-->
+<!--                                   value="{{ car.registration_date|date:'Y-m-d' }}">-->
+<!--                        </div>-->
+<!--                        <div class="mb-3 col-lg-4">-->
+<!--                            <label class="form-label">{{ form.vehicle_name.label }}</label>-->
+<!--                            <input class="form-control" id="vehicle_name" name="vehicle_name"-->
+<!--                                   type="text" value="{{ car.vehicle_name }}">-->
+<!--                        </div>-->
+<!--                        <div class="mb-3 col-lg-4">-->
+<!--                            <label class="form-label">{{ form.colour.label }}</label>-->
+<!--                            <input type="text" class="form-control" id="colour"-->
+<!--                                   name="colour" value="{{ car.colour }}">-->
+<!--                        </div>-->
+<!--                        <div class="mb-3 col-lg-4">-->
+<!--                            <label class="form-label">{{ form.model.label }}</label>-->
+<!--                            <input type="text" class="form-control" id="model"-->
+<!--                                   name="model" value="{{ car.model }}">-->
+<!--                        </div>-->
+<!--                        <div class="mb-3 col-lg-4">-->
+<!--                            <label class="form-label">{{ form.chassis_number.label }}</label>-->
+<!--                            <input type="text" class="form-control" id="chassis_number"-->
+<!--                                   name="chassis_number"-->
+<!--                                   value="{{ car.chassis_number }}">-->
+<!--                        </div>-->
+<!--                        <div class="mb-3 col-lg-4 form-group">-->
+<!--                            <label class="form-label">{{ form.tracker.label }}</label>-->
+<!--                            <select class="form-select" id="tracker" name="tracker">-->
+<!--                                <option value="{{ car.tracker.id }}">{{ car.tracker }}-->
+<!--                                </option>-->
+<!--                            </select>-->
+
+<!--                        </div>-->
+<!--                        <div class="mb-3 col-lg-4">-->
+<!--                            <input type="checkbox" class="form-check" id="insurance"-->
+<!--                                   name="insurance"-->
+<!--                                   value="True" {% if car.insurance %}checked{% endif %}> Insurance-->
+<!--                            <input type="checkbox" class="form-check" id="puc"-->
+<!--                                   name="puc"-->
+<!--                                   value="True" {% if car.puc %}checked{% endif %}> PUC-->
+
+<!--                        </div>-->
+<!--                        <div class="mb-3 col-lg-4">-->
+<!--                            <label class="form-label">{{ form.seating_capacity.label }}</label>-->
+<!--                            <input type="text" class="form-control" id="seating_capacity"-->
+<!--                                   name="seating_capacity"-->
+<!--                                   value="{{ car.seating_capacity }}">-->
+<!--                        </div>-->
+<!--                        <div class="mb-3 col-lg-4">-->
+<!--                            <label class="form-label">{{ form.fuel_type.label }}</label>-->
+<!--                            <input type="text" class="form-control" id="fuel_type"-->
+<!--                                   name="fuel_type"-->
+<!--                                   value="{{ car.fuel_type }}">-->
+<!--                        </div>-->
+<!--                        <div class="mb-3 col-lg-4">-->
+<!--                            <input type="checkbox" class="form-check" id="air_condition"-->
+<!--                                   name="air_condition"-->
+<!--                                   value="True" {% if car.air_condition %}checked{% endif %}> Air Condition-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Add other form fields as needed, pre-filled with car data &ndash;&gt;-->
+<!--                    </div>-->
+<!--                    <button class="btn btn-primary" type="submit">Update Car</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 {% endblock %}

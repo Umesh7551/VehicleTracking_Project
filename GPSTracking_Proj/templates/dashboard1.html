@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block title %} GPS Tracker Data {% endblock %}
-
-
 {% block content %}
-
+{% include 'vertical_menu.html' %}
+{% include 'navigation.html' %}
 <!--<h1>GPS Tracker Data</h1>-->
 <br/>
 
@@ -43,13 +43,15 @@
             <td>{{ data.speed }}</td>
             <td>{{ data.accuracy }}</td>
             <td>{{ data.timestamp }}</td>
-            <td>{{ data.panic }}
-            {% if data.panic == True %}
-                    <img src="{% static 'images/panic.png' %}" alt="Panic Image" title="Panic Button is pressed!!"
-                         id="panic_image"
-                         style="width: 30px; height: 25px; float: right; margin-right: 15px;margin-top: 10px;"/>
+            {% if data.panic %}
+            <td>
+                <img src="{% static 'images/panic.png' %}" alt="Panic Image" title="Panic Button is pressed!!"
+                     id="panic_image"
+                     style="width: 30px; height: 25px; float: right; margin-right: 15px;margin-top: 10px;"/></td>
 
-                    {% endif %}</td>
+            {% else %}
+            <td>No</td>
+            {% endif %}
             <td>{{ data.ignition }}
             <!-- Add this block to display green or red dot based on ignition value -->
                     {% if data.ignition == True %}

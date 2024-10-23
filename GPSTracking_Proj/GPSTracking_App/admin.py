@@ -7,6 +7,8 @@ from .models import Car, GPSTracker, Tracker_data, Driver, RFID, Zone, Profile, 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ['id', 'address1', 'address2', 'city', 'state', 'country', 'mobile', 'user_id', 'fleetowner']
+
+
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
     list_display = ['id', 'registration_number', 'registration_date', 'vehicle_name', 'colour', 'model',
@@ -18,7 +20,7 @@ class CarAdmin(admin.ModelAdmin):
 @admin.register(GPSTracker)
 class GPSTrackerAdmin(admin.ModelAdmin):
     list_display = ['id', 'serial_number']
-    search_fields = ['serial_number']
+    search_fields = ['serial_number', 'added_by']
 
 
 @admin.register(Tracker_data)

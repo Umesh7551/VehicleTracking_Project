@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
-
-{% block title %} {{ request.user.get_full_name }} Profile | Fleet Tracking System {% endblock %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} Profile | Fleet Tracking System {% endblock %}
 
 
 {% block content %}
+{% include 'vertical_menu.html' %}
+{% include 'navigation.html' %}
 {% if messages %}
     {% for message in messages %}
         <div class="alert {% if 'error' in message.tags %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
@@ -12,34 +15,199 @@
         </div>
     {% endfor %}
 {% endif %}
-<h2>User Profile</h2>
+
 
 {% if request.user.is_authenticated %}
-<p>Welcome, {{ request.user.username|capfirst }}!</p>
-<p>Welcome, {{ request.user.get_full_name }}!</p>
-<h2>Your Details:</h2>
-<p>Full Name: {{ request.user.first_name }} {{ request.user.last_name }}</p>
-<p>Email: {{ request.user.email }}</p>
-<p>Date Joined: {{ request.user.date_joined }}</p>
-<p>Address1 : {{ request.user.profile.address1 }}</p>
-<p>Address2 : {{ request.user.profile.address2 }}</p>
-<p>City : {{ request.user.profile.city }}</p>
-<p>State : {{ request.user.profile.state }}</p>
-<p>Country : {{ request.user.profile.country }}</p>
-<p>Mobile/Whatsapp Number : {{ request.user.profile.mobile }}</p>
-<a class="btn btn-danger" href="{% url 'logout_user' %}">Logout</a>
-<a class="btn btn-info" href="{% url 'change_password' %}">Change Password</a>
-<a class=" btn btn-primary" href="{% url 'profile_update' %}"> Update Profile</a>
-{% for group in request.user.groups.all %}
-    {% if group.name == 'fleetowner' %}
-        <a class="btn btn-secondary" href="{% url 'fleetowner_dashboard' %}">Back to Dashboard</a>
-    {% elif group.name == 'ed_admin_support_person' %}
-        <a class="btn btn-secondary" href="{% url 'ed_admin_support_dashboard' %}">Back to Dashboard</a>
-    {% elif group.name == 'fleetowner_support_person' %}
-        <a class="btn btn-secondary" href="{% url 'fleetowner_support_dashboard' %}">Back to Dashboard</a>
+<!--<h2>{{ request.user|capfirst }}'s Profile</h2>-->
+<!--<p>Welcome, {{ request.user.username|capfirst }}!</p>-->
+<!--<p>Welcome, {{ request.user.get_full_name }}!</p>-->
+<!--<h2>Your Details:</h2>-->
+<!--<p>Full Name: {{ request.user.first_name }} {{ request.user.last_name }}</p>-->
+<!--<p>Email: {{ request.user.email }}</p>-->
+<!--<p>Date Joined: {{ request.user.date_joined }}</p>-->
+<!--<p>Address1 : {{ request.user.profile.address1 }}</p>-->
+<!--<p>Address2 : {{ request.user.profile.address2 }}</p>-->
+<!--<p>City : {{ request.user.profile.city }}</p>-->
+<!--<p>State : {{ request.user.profile.state }}</p>-->
+<!--<p>Country : {{ request.user.profile.country }}</p>-->
+<!--<p>Mobile/Whatsapp Number : {{ request.user.profile.mobile }}</p>-->
+<!--<a class="btn btn-danger" href="{% url 'logout_user' %}">Logout</a>-->
+<!--<a class="btn btn-info" href="{% url 'change_password' %}">Change Password</a>-->
+<!--<a class=" btn btn-primary" href="{% url 'profile_update' %}"> Update Profile</a>-->
+<!--{% for group in request.user.groups.all %}-->
+<!--    {% if group.name == 'fleetowner' %}-->
+<!--        <a class="btn btn-secondary" href="{% url 'fleetowner_dashboard' %}">Back to Dashboard</a>-->
+<!--    {% elif group.name == 'ed_admin_support_person' %}-->
+<!--        <a class="btn btn-secondary" href="{% url 'ed_admin_support_dashboard' %}">Back to Dashboard</a>-->
+<!--    {% elif group.name == 'ed_admin' %}-->
+<!--        <a class="btn btn-secondary" href="{% url 'ed_admin_dashboard' %}">Back to Dashboard</a>-->
+<!--    {% elif group.name == 'fleetowner_support_person' %}-->
+<!--        <a class="btn btn-secondary" href="{% url 'fleetowner_support_dashboard' %}">Back to Dashboard</a>-->
 
-    {% endif %}
+<!--    {% endif %}-->
 
-{% endfor %}
+<!--{% endfor %}-->
+<!-- Content wrapper -->
+                <div class="content-wrapper">
+                    <!-- Content -->
+
+                    <div class="container-xxl flex-grow-1 container-p-y">
+
+                    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="nav nav-pills flex-column flex-md-row mb-3">
+      <li class="nav-item">
+        <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i> Account</a>
+      </li>
+    </ul>
+    <div class="card mb-4">
+      <h5 class="card-header">Profile Details</h5>
+      <!-- Account -->
+      <div class="card-body">
+        <div class="d-flex align-items-start align-items-sm-center gap-4">
+          <img
+            src="{% if request.user.profile.profile_photo %} {{ request.user.profile.profile_photo.url }} {% else %} {% static 'assets/img/avatars/1.png' %} {% endif %}"
+            alt="user-avatar"
+            class="d-block rounded"
+            height="100"
+            width="100"
+            id="uploadedAvatar"
+          />
+          <div class="button-wrapper">
+            <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+              <span class="d-none d-sm-block">Upload new photo</span>
+              <i class="bx bx-upload d-block d-sm-none"></i>
+              <input
+                type="file"
+                id="upload"
+                class="account-file-input"
+                hidden
+                accept="image/png, image/jpeg"
+              />
+            </label>
+
+            <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+              <i class="bx bx-reset d-block d-sm-none"></i>
+              <span class="d-none d-sm-block">Reset</span>
+            </button>
+
+            <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+          </div>
+        </div>
+      </div>
+      <hr class="my-0" />
+      <div class="card-body">
+        <form id="formAccountSettings" method="POST" onsubmit="return false" action="">
+          <div class="row">
+            <div class="mb-3 col-md-6">
+              <label for="firstName" class="form-label">First Name</label>
+              <input
+                class="form-control"
+                type="text"
+                id="firstName"
+                name="firstName"
+                value="{{ request.user.first_name }}"
+                autofocus
+              />
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input class="form-control" type="text" name="lastName" id="lastName" value="{{ request.user.last_name }}" />
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="email" class="form-label">E-mail</label>
+              <input
+                class="form-control"
+                type="text"
+                id="email"
+                name="email"
+                value="{{ request.user.email }}"
+                placeholder="john.doe@example.com"
+              />
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="organization" class="form-label">Organization</label>
+              <input
+                type="text"
+                class="form-control"
+                id="organization"
+                name="organization"
+                value="ThemeSelection"
+              />
+            </div>
+            <div class="mb-3 col-md-6">
+              <label class="form-label" for="phoneNumber">Phone Number</label>
+              <div class="input-group input-group-merge">
+                <span class="input-group-text">IN (+91)</span>
+                <input
+                  type="text"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  class="form-control"
+                  placeholder="202 555 0111"
+                  value="{{ request.user.profile.mobile }}"
+                />
+              </div>
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="address" class="form-label">Address</label>
+              <input type="text" class="form-control" id="address" name="address" placeholder="Address" value="{{ request.user.profile.address1 }}" />
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="state" class="form-label">State</label>
+              <input class="form-control" type="text" id="state" name="state" placeholder="Maharashtra" value="{{ request.user.profile.state }}"/>
+            </div>
+            <div class="mb-3 col-md-6">
+              <label for="zipCode" class="form-label">Zip Code</label>
+              <input
+                type="text"
+                class="form-control"
+                id="zipCode"
+                name="zipCode"
+                placeholder="231465"
+                maxlength="6"
+                value="{{ request.user.profile.pin }}"
+              />
+            </div>
+
+
+
+          </div>
+          <div class="mt-2">
+            <button type="submit" class="btn btn-primary me-2">Update changes</button>
+          </div>
+        </form>
+      </div>
+      <!-- /Account -->
+    </div>
+    <div class="card">
+      <h5 class="card-header">Delete Account</h5>
+      <div class="card-body">
+        <div class="mb-3 col-12 mb-0">
+          <div class="alert alert-warning">
+            <h6 class="alert-heading fw-bold mb-1">Are you sure you want to delete your account?</h6>
+            <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
+          </div>
+        </div>
+        <form id="formAccountDeactivation" onsubmit="return false">
+          <div class="form-check mb-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              name="accountActivation"
+              id="accountActivation"
+            />
+            <label class="form-check-label" for="accountActivation"
+              >I confirm my account deactivation</label
+            >
+          </div>
+          <button type="submit" class="btn btn-danger deactivate-account">Deactivate Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endif %}
 {% endblock %}

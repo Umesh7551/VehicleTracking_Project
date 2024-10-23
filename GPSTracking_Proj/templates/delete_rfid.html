@@ -1,14 +1,19 @@
-<!-- delete_driver.html -->
 {% extends 'base.html' %}
-
+{% load static %}
+{% load crispy_forms_tags %}
 {% block title %} Delete RFID {% endblock %}
 
 {% block content %}
+{% include 'vertical_menu.html' %}
+{% include 'navigation.html' %}
+<div class="container">
   <h1>Delete RFID</h1>
   <p>Are you sure you want to delete the RFID '{{ rfid.rfid_code }}'?</p>
   <form method="post" action="{% url 'delete_rfid' id=rfid.id %}">
     {% csrf_token %}
     <button class="btn btn-danger" type="submit">Delete</button>
-    <a href="{% url 'rfid_list' %}">Cancel</a>
+    <a href="{% url 'add_rfid_and_list' %}">Cancel</a>
   </form>
+</div>
+
 {% endblock %}

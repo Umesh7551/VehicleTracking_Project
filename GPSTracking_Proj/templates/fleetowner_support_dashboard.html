@@ -16,7 +16,14 @@
 
 <h1>fleetowner_support_personnel_page</h1>
 {% if request.user.is_authenticated %}
-
+<h2>Cars Associated with Your Fleetowner</h2>
+  <ul>
+    {% for car in cars %}
+      <li>{{ car.vehicle_name }} - {{ car.model }} - {{ car.owner.get_full_name }}</li>
+    {% empty %}
+      <li>No cars found.</li>
+    {% endfor %}
+  </ul>
  <a class="btn btn-danger" href="{% url 'logout_user' %}">Logout</a>
 <a class="btn btn-info" href="{% url 'profile' %}">Profile</a>
 

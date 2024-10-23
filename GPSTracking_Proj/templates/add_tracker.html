@@ -12,7 +12,7 @@
     Tracker is not added successfully.
 </div>
 
-<form id="tracker-form" action="{% url 'add_tracker' %}" method="post" novalidate>
+<form id="tracker-form" action="{% url 'add_tracker_and_list' %}" method="post" novalidate>
     {% csrf_token %}
     {{ form|crispy }}
     <input type="submit" value="Add Tracker" class="btn btn-primary" style="width:100px;">

@@ -1,17 +1,84 @@
-
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %} Update Driver {% endblock %}
 
 
 {% block content %}
-
-<h2>Update Driver</h2>
+{% include 'vertical_menu.html' %}
+{% include 'navigation.html' %}
+<div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if 'error' in message.tags %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+         role="alert">
+        <strong>{{ message }}</strong>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <h2>Update Driver</h2>
 <form method="post" action="{% url 'update_driver' driver.id %}">
     {% csrf_token %}
-    {{ form.as_p }}
+<!--    {{ form|crispy }}-->
+    <div class="row mb-3">
+            <div class="mb-3 col-lg-6">
+<!--            <label class="form-label">Registration Number</label>-->
+                <label class="form-label">{{ form.driver_name.label }}</label>
+                <input class="form-control" name="driver_name"
+                       type="text"
+                       value="{{ driver.driver_name }}">
+            </div>
+            <div class="mb-3 col-lg-6">
+<!--            <label class="form-label">Registration Date</label>-->
+                <label class="form-label">{{ form.driver_licence_number.label }}</label>
+                <input class="form-control" name="driver_licence_number"
+                       type="text"
+                       value="{{ driver.driver_licence_number }}">
+            </div>
+            <div class="mb-3 col-lg-4">
+                <label class="form-label">{{ form.issue_date.label }}</label>
+                <input class="form-control" id="issue_date" name="issue_date"
+                       type="date" value="{{ driver.issue_date|date:'Y-m-d' }}">
+            </div>
+            <div class="mb-3 col-lg-4">
+                <label class="form-label">{{ form.valid_till.label }}</label>
+                <input type="date" class="form-control" id="valid_till"
+                       name="valid_till" value="{{ driver.valid_till|date:'Y-m-d' }}">
+            </div>
+            <div class="mb-3 col-lg-4">
+                <label class="form-label">{{ form.address.label }}</label>
+                <textarea class="form-control textarea" id="address"
+                          name="address">{{ driver.address }}</textarea>
+            </div>
+            <div class="mb-3 col-lg-4">
+                <label class="form-label">{{ form.upload_licence.label }}</label>
+                <input type="file" class="form-control" id="upload_licence"
+                       name="upload_licence"
+                       value="{{ driver.upload_licence }}">
+            </div>
+            <div class="mb-3 col-lg-4 form-group">
+                <label class="form-label">{{ form.car.label }}</label>
+                <select class="form-select" id="car" name="car">
+                    <option value="{{ driver.car.id }}">{{ driver.car }}
+                    </option>
+                </select>
+
+            </div>
+            <div class="mb-3 col-lg-4 form-group">
+                <label class="form-label">{{ form.rfid.label }}</label>
+                <select class="form-select" id="rfid" name="rfid">
+                    <option value="{{ driver.rfid.id }}">{{ driver.rfid }}
+                    </option>
+                </select>
+
+            </div>
+
+        </div>
     <button class="btn btn-primary" type="submit">Update Driver</button>
+    <button class="btn btn-danger" type="reset">Cancel</button>
 </form>
+</div>
+
 
 
 {% endblock %}

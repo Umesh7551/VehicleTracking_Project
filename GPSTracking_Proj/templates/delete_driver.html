@@ -1,14 +1,20 @@
 <!-- delete_driver.html -->
 {% extends 'base.html' %}
-
+{% load static %}
+{% load crispy_forms_tags %}
 {% block title %} Delete Driver {% endblock %}
 
 {% block content %}
-  <h1>Delete Driver</h1>
-  <p>Are you sure you want to delete the driver '{{ driver.driver_name }}'?</p>
-  <form method="post" action="{% url 'delete_driver' id=driver.id %}">
-    {% csrf_token %}
-    <button class="btn btn-danger" type="submit">Delete</button>
-    <a href="{% url 'driver_list' %}">Cancel</a>
-  </form>
+{% include 'vertical_menu.html' %}
+{% include 'navigation.html' %}
+<div class="container">
+    <h1>Delete Driver</h1>
+    <p>Are you sure you want to delete the driver '{{ driver.driver_name }}'?</p>
+    <form action="{% url 'delete_driver' id=driver.id %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Delete</button>
+        <a href="{% url 'add_driver_and_list' %}">Cancel</a>
+    </form>
+</div>
+
 {% endblock %}

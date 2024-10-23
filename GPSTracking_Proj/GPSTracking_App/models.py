@@ -14,18 +14,20 @@ class Profile(models.Model):
     pin = models.CharField(max_length=6)
     country = models.CharField(max_length=255)
     mobile = models.CharField(max_length=15)
+    profile_photo = models.ImageField(verbose_name='Profile Photo', upload_to='profile_photos/')
 
     class Meta:
         db_table = 'profile'
 
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return f'{self.user} Profile'
 
 
 class GPSTracker(models.Model):
     serial_number = models.CharField(verbose_name='Serial Number', max_length=200, unique=True)
     # car = models.OneToOneField(Car, on_delete=models.CASCADE)
     # fleet_owner = models.ForeignKey(FleetOwner, on_delete=models.CASCADE, blank=True, default='')
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, default=1)  # Track who added the tracker
     class Meta:
         db_table = 'gpstracker'
 
@@ -34,19 +36,19 @@ class GPSTracker(models.Model):
 
 
 class Car(models.Model):
-    registration_number = models.CharField(verbose_name='Registration Number', max_length=20, unique=True)
+    registration_number = models.CharField(verbose_name='Registration Number', max_length=20)
     registration_date = models.DateField(verbose_name='Registration Date')
     vehicle_name = models.CharField(verbose_name='Vehicle Name', max_length=100)
     colour = models.CharField(verbose_name='Colour', max_length=50)
     model = models.CharField(verbose_name='Model', max_length=50)
-    chassis_number = models.CharField(verbose_name='Chassis Number', max_length=100, unique=True)
+    chassis_number = models.CharField(verbose_name='Chassis Number', max_length=100)
     # tracker = models.ForeignKey(GPSTracker, on_delete=models.SET_NULL, blank=True, null=True)
     tracker = models.OneToOneField(GPSTracker, on_delete=models.SET_NULL, null=True, blank=True)
-    insurance = models.BooleanField(verbose_name='Insurance', default=1)
-    puc = models.BooleanField(verbose_name='PUC', default=1)
+    insurance = models.BooleanField(verbose_name='Insurance', default=False)
+    puc = models.BooleanField(verbose_name='PUC', default=False)
     seating_capacity = models.CharField(verbose_name='Seating Capacity', max_length=2)
     fuel_type = models.CharField(verbose_name='Fuel Type', max_length=100)
-    air_condition = models.BooleanField(verbose_name='Air Condition', default=1)
+    air_condition = models.BooleanField(verbose_name='Air Condition', default=False)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
 
     class Meta:
@@ -92,6 +94,7 @@ class Tracker_data(models.Model):
 class RFID(models.Model):
     rfid_code = models.CharField(verbose_name='RFID Code', max_length=100, unique=True)
     is_active = models.BooleanField(verbose_name='Is Active', default=True)
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, default=1)  # Track who added the rfid
 
     class Meta:
         db_table = 'rfid'
@@ -124,4 +127,4 @@ class FleetOwnerSupport(models.Model):
     class Meta:
         db_table = 'fleetowner_support'
     def __str__(self):
-        return f"{self.fleetowner.username}'s Support: {self.fleetowner_support_user.username}"
+        return f"{self.fleetowner}'s FleetOwner Support Person: {self.fleetowner_support_user}"

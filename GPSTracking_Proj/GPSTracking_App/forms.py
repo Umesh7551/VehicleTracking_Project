@@ -6,38 +6,77 @@ from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
 
 class CarForm(forms.ModelForm):
+    # tracker = forms.CharField(required=False, max_length=255, label="Tracker Serial Number")
     class Meta:
         model = Car
         fields = ['registration_number', 'registration_date', 'vehicle_name', 'colour', 'model', 'chassis_number', 'tracker', 'insurance', 'puc', 'seating_capacity', 'fuel_type', 'air_condition']
         widgets = {
+            'registration_number': forms.TextInput(attrs={'placeholder': 'Enter car number', 'class': 'form-control'}),
             'registration_date': forms.DateInput(attrs={'type': 'date'}),
+            'vehicle_name': forms.TextInput(attrs={'placeholder': 'Enter car name', 'class': 'form-control'}),
+            'colour': forms.TextInput(attrs={'placeholder': 'Enter colour', 'class': 'form-control'}),
+            'model': forms.TextInput(attrs={'placeholder': 'Enter Model', 'class': 'form-control'}),
+            'chassis_number': forms.TextInput(attrs={'placeholder': 'Enter Chassis Number', 'class': 'form-control'}),
+            'seating_capacity': forms.TextInput(attrs={'placeholder': 'Enter Seating Capacity', 'class': 'form-control'}),
+            'fuel_type': forms.TextInput(attrs={'placeholder': 'Enter Fuel Type', 'class': 'form-control'}),
+            'tracker': forms.Select(attrs={'class': 'form-select'}),  # Use Select for dropdown
         }
+
+        # def clean_tracker_serial_number(self):
+        #     tracker_serial_number = self.cleaned_data.get('tracker')
+        #     if tracker_serial_number:
+        #         try:
+        #             tracker = GPSTracker.objects.get(serial_number=tracker_serial_number)
+        #             return tracker
+        #         except GPSTracker.DoesNotExist:
+        #             raise forms.ValidationError("Tracker with this serial number does not exist.")
+        #     return None
+
+        # def __init__(self, *args, **kwargs):
+        #     super(CarForm, self).__init__(*args, **kwargs)
+        #     # Populate the tracker dropdown with available GPSTrackers
+        #     self.fields['tracker'].queryset = GPSTracker.objects.all()
+        #     self.fields['tracker'].empty_label = "Select a tracker"
 
 class TrackerForm(forms.ModelForm):
     class Meta:
         model = GPSTracker
         fields = ['serial_number']
-
+        exclude = ['added_by']
 class DriverForm(forms.ModelForm):
     class Meta:
         model = Driver
         fields = ['driver_name', 'driver_licence_number', 'issue_date', 'valid_till', 'address', 'upload_licence', 'car', 'rfid']
+        widgets = {
+            'driver_name': forms.TextInput(attrs={'placeholder': 'Enter Driver Name', 'class': 'form-control'}),
+            'driver_licence_number': forms.TextInput(attrs={'placeholder': 'Enter Driver Licence Number', 'class': 'form-control'}),
+            'issue_date': forms.DateInput(attrs={'type': 'date', 'class': "form-control"}),
+            'valid_till': forms.DateInput(attrs={'type': 'date', 'class': "form-control"}),
+            'address': forms.Textarea(attrs={'placeholder': 'Enter Address', 'class': 'form-control', 'rows': 5}),
+            'upload_licence': forms.FileInput(attrs={'class': 'form-control'}),
+            'car': forms.Select(attrs={'class': 'form-select'}),
+            'rfid': forms.Select(attrs={'class': 'form-select'})
 
+        }
 
 class RFIDForm(forms.ModelForm):
     class Meta:
         model = RFID
         fields = ['rfid_code', 'is_active']
+        widgets = {
+            'rfid_code': forms.TextInput(attrs={'placeholder': 'Enter RFID Number', 'class': 'form-control'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check'}),
+        }
 
 
 class UserRegisterForm(UserCreationForm):
-    address1 = forms.CharField(max_length=255, required=True, label="Address Line 1")
-    address2 = forms.CharField(max_length=255, required=False, label="Address Line 2")
-    city = forms.CharField(max_length=255, required=True, label="City")
-    state = forms.CharField(max_length=255, required=True, label="State")
-    pin = forms.CharField(max_length=6, required=True, label="Pin")
-    country = forms.CharField(max_length=255, required=True, label="Country")
-    mobile = forms.CharField(max_length=15, required=True, label='Mobile/Whatsapp Number')
+    # address1 = forms.CharField(max_length=255, required=True, label="Address Line 1")
+    # address2 = forms.CharField(max_length=255, required=False, label="Address Line 2")
+    # city = forms.CharField(max_length=255, required=True, label="City")
+    # state = forms.CharField(max_length=255, required=True, label="State")
+    # pin = forms.CharField(max_length=6, required=True, label="Pin")
+    # country = forms.CharField(max_length=255, required=True, label="Country")
+    # mobile = forms.CharField(max_length=15, required=True, label='Mobile/Whatsapp Number')
 
     class Meta:
         model = User
@@ -91,18 +130,28 @@ class UserRegisterForm(UserCreationForm):
         return user
 
 
-class LoginForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['username', 'password']
-        widgets = {
-            'password': forms.PasswordInput(),
-        }
+# class LoginForm(forms.ModelForm):
+#     remember_me = forms.BooleanField(required=False)  # Add this field
+#
+#     class Meta:
+#         model = User
+#         fields = ['username', 'password']
+#         widgets = {
+#             'password': forms.PasswordInput(),
+#         }
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=255)
+    password = forms.CharField(widget=forms.PasswordInput)
+    remember_me = forms.BooleanField(required=False)  # Add this field
+
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email', 'username']
+
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:

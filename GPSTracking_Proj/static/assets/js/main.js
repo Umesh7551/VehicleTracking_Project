@@ -1,122 +1,113 @@
-//  counter js
 
-// JavaScript code to increment counters with different initial values
-let counters = [0, 0, 0]; // Initial values
-const stopValues = [15, 30, 40]; // Values to stop counting
-let counterIntervals = []; // Array to store interval IDs
+'use strict';
 
-// Function to update a specific counter
-function updateCounter(counterIndex) {
-  if (counters[counterIndex] >= stopValues[counterIndex]) {
-    clearInterval(counterIntervals[counterIndex]); // Stop the counting for the specific counter
-  } else {
-    counters[counterIndex]++;
-    document.getElementById("counter" + (counterIndex + 1)).textContent = counters[counterIndex] + " + ";
+let menu, animate;
+
+(function () {
+
+  let layoutMenuEl = document.querySelectorAll('#layout-menu');
+  layoutMenuEl.forEach(function (element) {
+    menu = new Menu(element, {
+      orientation: 'vertical',
+      closeChildren: false
+    });
+    // Change parameter to true if you want scroll animation
+    window.Helpers.scrollToActive((animate = false));
+    window.Helpers.mainMenu = menu;
+  });
+
+  // Initialize menu togglers and bind click on each
+  let menuToggler = document.querySelectorAll('.layout-menu-toggle');
+  menuToggler.forEach(item => {
+    item.addEventListener('click', event => {
+      event.preventDefault();
+      window.Helpers.toggleCollapsed();
+    });
+  });
+
+  // Display menu toggle (layout-menu-toggle) on hover with delay
+  let delay = function (elem, callback) {
+    let timeout = null;
+    elem.onmouseenter = function () {
+      // Set timeout to be a timer which will invoke callback after 300ms (not for small screen)
+      if (!Helpers.isSmallScreen()) {
+        timeout = setTimeout(callback, 300);
+      } else {
+        timeout = setTimeout(callback, 0);
+      }
+    };
+
+    elem.onmouseleave = function () {
+      // Clear any timers set to timeout
+      document.querySelector('.layout-menu-toggle').classList.remove('d-block');
+      clearTimeout(timeout);
+    };
+  };
+  if (document.getElementById('layout-menu')) {
+    delay(document.getElementById('layout-menu'), function () {
+      // not for small screen
+      if (!Helpers.isSmallScreen()) {
+        document.querySelector('.layout-menu-toggle').classList.add('d-block');
+      }
+    });
   }
-}
-// Update counters independently
-for (let i = 0; i < counters.length; i++) {
-  counterIntervals[i] = setInterval(() => updateCounter(i), 30);
-}
 
-
-
-//    iframe js
-
-let inputCount = 2; // Start with 2 input fields
-
-function addInput() {
-  inputCount++;
-
-  // Create two new input elements
-  for (let i = 0; i < 2; i++) {
-    const input = document.createElement("input");
-    input.type = "text";
-    input.name = "Name" + inputCount + "" + (i + 1);
-    input.placeholder = "Name " + inputCount + "" + (i + 1);
-
-    // Create a container for the input
-    const container = document.createElement("div");
-    container.classList.add("input-container");
-    container.appendChild(input);
-
-    // Append the container to the dynamicInputs div
-    document.getElementById("dynamicInputs").appendChild(container);
+  // Display in main menu when menu scrolls
+  let menuInnerContainer = document.getElementsByClassName('menu-inner'),
+    menuInnerShadow = document.getElementsByClassName('menu-inner-shadow')[0];
+  if (menuInnerContainer.length > 0 && menuInnerShadow) {
+    menuInnerContainer[0].addEventListener('ps-scroll-y', function () {
+      if (this.querySelector('.ps__thumb-y').offsetTop) {
+        menuInnerShadow.style.display = 'block';
+      } else {
+        menuInnerShadow.style.display = 'none';
+      }
+    });
   }
 
-  // Create a submit button
-  const submitButton = document.createElement("button");
-  submitButton.textContent = "Submit";
-  submitButton.onclick = submitForm;
+  // Init helpers & misc
+  // --------------------
 
-  // Append the submit button to the dynamicInputs div
-  document.getElementById("dynamicInputs").appendChild(submitButton);
-}
+  // Init BS Tooltip
+  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
 
-function removeInput() {
-  const dynamicInputs = document.getElementById("dynamicInputs");
-
-  // Check if there are input fields to remove
-  if (inputCount > 2) { // Ensure at least 2 input fields are present
-    // Remove the last three children (two input fields and one submit button)
-    for (let i = 0; i < 3; i++) {
-      dynamicInputs.removeChild(dynamicInputs.lastChild);
+  // Accordion active class
+  const accordionActiveFunction = function (e) {
+    if (e.type == 'show.bs.collapse' || e.type == 'show.bs.collapse') {
+      e.target.closest('.accordion-item').classList.add('active');
+    } else {
+      e.target.closest('.accordion-item').classList.remove('active');
     }
-    inputCount--;
+  };
+
+  const accordionTriggerList = [].slice.call(document.querySelectorAll('.accordion'));
+  const accordionList = accordionTriggerList.map(function (accordionTriggerEl) {
+    accordionTriggerEl.addEventListener('show.bs.collapse', accordionActiveFunction);
+    accordionTriggerEl.addEventListener('hide.bs.collapse', accordionActiveFunction);
+  });
+
+  // Auto update layout based on screen size
+  window.Helpers.setAutoUpdate(true);
+
+  // Toggle Password Visibility
+  window.Helpers.initPasswordToggle();
+
+  // Speech To Text
+  window.Helpers.initSpeechToText();
+
+  // Manage menu expanded/collapsed with templateCustomizer & local storage
+  //------------------------------------------------------------------
+
+  // If current layout is horizontal OR current window screen is small (overlay menu) than return from here
+  if (window.Helpers.isSmallScreen()) {
+    return;
   }
-}
 
-function submitForm() {
-  // Implement your submit logic here
-  alert("Form submitted!");
-}
+  // If current layout is vertical and current window screen is > small
 
-
-
-///////////////popover//////////////
-
-
-
-function openpopup() {
-  document.getElementById("popoverModel").style.display = "block"; 
-}
-function closepopup() {
-  document.getElementById("popoverModel").style.display = "none";
-}
-
-function showpopup(){
-  closepopup()
-  document.getElementById("popupmodel").style.display = "block";
-}
-
-function hidepopup() {
-  document.getElementById("popupmodel").style.display = "none";
-}
-
-
-// var modal = document.getElementById("popover"); 
-// var btn = document.getElementById("redeem_btn");
-// btn.onclick = function() {
-//   modal.style.display = "block";
-//   console.log("click");
-// }
-// Function to open the popover
-// function showPopover() {
-//   document.getElementById("popoverModel").style.display = "block";
-// }
-
-// // Function to close the popover
-// function hidePopover() {
-//   var popover = document.getElementById("popover");
-//   popover.style.display = "none";
-// }
-
-
-
-// // Event listener for opening the popover
-// document.getElementById("popoverButton").addEventListener("click", showPopover);
-
-// // Event listener for closing the popover
-// document.getElementById("closeButton").addEventListener("click", hidePopover);
-
-
+  // Auto update menu collapsed/expanded based on the themeConfig
+  window.Helpers.setCollapsed(true, false);
+})();

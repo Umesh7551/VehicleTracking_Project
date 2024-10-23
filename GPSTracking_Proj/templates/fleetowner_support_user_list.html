@@ -37,7 +37,7 @@
     {% if support_users %}
         {% for user in support_users %}
         <tr>
-            <td>{{ user.fleetowner_support_user.id }}</td>
+            <td>{{ user.id }}</td>
             <td>{{ user.fleetowner_support_user.first_name }}</td>
             <td>{{ user.fleetowner_support_user.last_name }}</td>
             <td>{{ user.fleetowner_support_user.email }}</td>
@@ -49,8 +49,8 @@
             <td>{{ user.fleetowner_support_user.pin }}</td>
             <td>{{ user.fleetowner_support_user.country }}</td>
             <td>{{ user.fleetowner_support_user.mobile }}</td>
-            <td><a class="btn btn-info" href="{% url 'edit_support_user' user.fleetowner_support_user.id %}"><i class="fa-sharp fa-solid fa-pen" title="Edit Fleetowner Support"></i></a>
-                <a class="btn btn-danger" href="{% url 'delete_support_user' user.fleetowner_support_user.id %}"><i class="fa-solid fa-trash" title="Delete Fleetowner Support"></i></a>
+            <td><a class="btn btn-info" href="{% url 'edit_fleetowner_support_user' user.id %}"><i class="fa-sharp fa-solid fa-pen" title="Edit Fleetowner Support"></i></a>
+                <a class="btn btn-danger" href="{% url 'delete_fleetowner_support_user' user.id %}"><i class="fa-solid fa-trash" title="Delete Fleetowner Support"></i></a>
 </td>
 
         </tr>

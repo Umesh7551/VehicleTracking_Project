@@ -1,14 +1,20 @@
 <!-- delete_driver.html -->
 {% extends 'base.html' %}
-
+{% load static %}
+{% load crispy_forms_tags %}
 {% block title %} Delete Tracker {% endblock %}
 
 {% block content %}
-  <h1>Delete Tracker</h1>
-  <p>Are you sure you want to delete the Tracker '{{ tracker.serial_number }}'?</p>
-  <form method="post" action="{% url 'delete_tracker' id=tracker.id %}">
-    {% csrf_token %}
-    <button class="btn btn-danger" type="submit">Delete</button>
-    <a href="{% url 'tracker_list' %}">Cancel</a>
-  </form>
+{% include 'vertical_menu.html' %}
+{% include 'navigation.html' %}
+<div class="container">
+    <h1>Delete Tracker</h1>
+    <p>Are you sure you want to delete the Tracker '{{ tracker.serial_number }}'?</p>
+    <form action="{% url 'delete_tracker' id=tracker.id %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Delete</button>
+        <a href="{% url 'add_tracker_and_list' %}">Cancel</a>
+    </form>
+</div>
+
 {% endblock %}
